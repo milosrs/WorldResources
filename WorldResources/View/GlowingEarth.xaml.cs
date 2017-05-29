@@ -410,7 +410,7 @@ namespace WorldResources
         {
             Console.WriteLine("X:" + e.GetPosition(map).X + " Y:" + e.GetPosition(map).Y);
         }
-
+        /*----------------------------List geteri------------------------*/
         public ObservableCollection<Model.Resource> getResources()
         {
             return _resources;
@@ -428,10 +428,33 @@ namespace WorldResources
         {
             return _resOnCanvas;
         }
+        /*----------------------------List seteri------------------------*/
+        public void setResources(ObservableCollection<Model.Resource> res)
+        {
+            _resources=res;
+            resources = _resources;
+        }
+        public void setTypes(ObservableCollection<Model.Type> t)
+        {
+            _types=t;
+            types = _types;
+        }
+        public void setTags(ObservableCollection<Model.Etiquette> e)
+        {
+            _tags = e;
+            tags = _tags;
+        }
+
+        public void setMapItems(ObservableCollection<Model.MapItem> mi)
+        {
+            _resOnCanvas = mi;
+            resOnCanvas = _resOnCanvas;
+        }
 
         public void setTitle(string t)
         {
             _title = t;
+            title = _title;
         }
         public string getTitle()
         {
