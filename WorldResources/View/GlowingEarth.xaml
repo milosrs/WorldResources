@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:WorldResources"
         xmlns:data="clr-namespace:WorldResources.Model"
         mc:Ignorable="d"
-        Title="Glowing Earth" 
+        Title="{Binding Path=title}"
         Background="#1a1a1a"
         WindowStartupLocation="CenterScreen"
         Icon="/r/globe.ico" Loaded="Window_Loaded"
-        ResizeMode="CanMinimize">
-    
+        >
+
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <Menu.ItemsPanel>
@@ -39,40 +40,43 @@
         </Menu>
         <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="67*"/>
-                <RowDefinition Height="575*"/>
-                <RowDefinition Height="29*"/>
+                <RowDefinition Height="19*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="130*"/>
+                <RowDefinition Height="7*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1003*"/>
                 <ColumnDefinition Width="269*"/>
             </Grid.ColumnDefinitions>
 
-            <ItemsControl x:Name="map" Margin="10,23,0,0" Grid.Row="1" ItemsSource="{Binding Path=resOnCanvas}" AllowDrop="True" DragEnter="can_DragEnter" Drop="can_Drop" DragOver="can_DragOver" MouseMove="map_MouseMove" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseRightButtonDown="map_PreviewMouseRightButtonDown" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas Name="canMap">
-                            <Canvas.Background>
-                                <ImageBrush ImageSource="/r/map.jpg"></ImageBrush>
-                            </Canvas.Background>
-                        </Canvas>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="Canvas.Left" Value="{Binding position.X}" />
-                        <Setter Property="Canvas.Top" Value="{Binding position.Y}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type data:MapItem}" >
-                        <StackPanel HorizontalAlignment="Center" Opacity="0.9" Height="90" Background="{Binding Path=highlight}">
-                            <Image Width="50" Height="50" Stretch="Fill" Source="{Binding path}" Margin="5" />
-                            <TextBlock TextAlignment="Center" Text="{Binding name}" FontStyle="Oblique" Foreground="Wheat" FontWeight="Bold" Margin="2"  />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <Viewbox  Grid.Row="2">
+                <ItemsControl x:Name="map" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=resOnCanvas}" AllowDrop="True" DragEnter="can_DragEnter" Drop="can_Drop" DragOver="can_DragOver" MouseMove="map_MouseMove" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseRightButtonDown="map_PreviewMouseRightButtonDown" Margin="10,0" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Name="canMap" Width="1920" Height="1080" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Canvas.Background>
+                                    <ImageBrush ImageSource="/r/map.jpg"></ImageBrush>
+                                </Canvas.Background>
+                            </Canvas>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding position.X}" />
+                            <Setter Property="Canvas.Top" Value="{Binding position.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type data:MapItem}" >
+                            <StackPanel HorizontalAlignment="Center" Opacity="0.9" Height="170" Width="100" Background="{Binding Path=highlight}">
+                                <Image Width="100" Height="90" Stretch="Fill" Source="{Binding path}" Margin="5" />
+                                <TextBlock TextAlignment="Center" FontSize="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding name}" FontStyle="Oblique" Foreground="Wheat" FontWeight="Bold" Margin="2"  />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Viewbox>
             <!--Image x:Name="map" HorizontalAlignment="Stretch" Margin="15,0,10,10" Grid.Row="1" VerticalAlignment="Stretch" Source="/r/map.jpg" Grid.RowSpan="2"/>
             <Canvas Name="can" Background="Transparent" Margin="15,23,10,0" Grid.Row="1" /!-->
 
@@ -117,7 +121,7 @@
                     <Image Source="/r/help.png"  />
                 </Button>
             </ToolBar>
-            <ListView x:Name="itemList" Grid.Column="1" HorizontalAlignment="Stretch" Margin="7,23,6,0" Grid.Row="1" VerticalAlignment="Stretch" Background="#324251" ItemsSource="{Binding Path=resources}" FontSize="16" Foreground="Wheat" PreviewMouseLeftButtonDown="itemList_PreviewMouseLeftButtonDown" MouseMove="itemList_MouseMove"  >
+            <ListView x:Name="itemList" Grid.Column="1" HorizontalAlignment="Stretch" Grid.Row="2" VerticalAlignment="Stretch" Background="#324251" ItemsSource="{Binding Path=resources}" FontSize="16" Foreground="Wheat" PreviewMouseLeftButtonDown="itemList_PreviewMouseLeftButtonDown" MouseMove="itemList_MouseMove" Margin="0,0,10,0"  >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

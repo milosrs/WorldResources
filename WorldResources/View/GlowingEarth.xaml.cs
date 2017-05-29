@@ -21,18 +21,25 @@ namespace WorldResources
 {
     /// <summary>
     /// Interaction logic for GlowingEarth.xaml
-    /// </
-
+    /// </summary>
+    enum clickState { FIND_ITEM, LIST_TO_MAP, MAP_TO_MAP}           //Pomaze nam pri Drag and Drop
+                                                                    //Find Item ce hvatati tacke od gornjeg levog do donjeg desnog coska slike.
+                                                                    //List to map ce hvatati tacke svih itema koji su na mapi od gornjeg levog do donjeg desnog coska slike.
+                                                                    //Map to map ce ignorisati dragItem==m situaciju
     public partial class GlowingEarth : Window, INotifyPropertyChanged
     {
         private ObservableCollection<Model.Etiquette> _tags;        //tagovi
         private ObservableCollection<Model.Resource> _resources;    //resursi
         private ObservableCollection<Model.Type> _types;            //tipovi
         private Model.MapItem _dragItem;                            //Sta se vuce - referenca
-        private bool move;                                          //Da li vuces ili ne
         private Model.MapItem mi;                                   //Ono sto se vuce sa mape - zaseban objekat kopija
         private Point startPoint = new Point();                     //Klik tacka
         private ObservableCollection<Model.MapItem> _resOnCanvas;   //Resursi koji su na kanvasu
+        private clickState searchMode;                              //Enum odgore
+        private bool move;                                          //Da li se ono na mapi pomera ili ne
+        private string _title;                                      //Ime projekta
+        private string serPath;
+
         /*--------------------------Binding-----------------------------*/
         public ObservableCollection<Model.Etiquette> tags
         {
@@ -94,12 +101,26 @@ namespace WorldResources
                 OnPropertyChanged("dragItem");
             }
         }
+        public string title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                _title = value;
+                OnPropertyChanged("title");
+            }
+        }
         /*----------------------------Save--------------------------*/
         private BinaryFormatter fm;
         private FileStream sm = null;
         private string path;
+
         /*----------------------------INotify------------------------*/
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged(string name)
         {
             if (PropertyChanged != null)
@@ -107,19 +128,19 @@ namespace WorldResources
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
-
+        /*----------------------------Singleton------------------------*/
         private static GlowingEarth ge;
         public static GlowingEarth getInstance()
         {
-            if (ge != null)
+            if (ge == null)
             {
-                return ge;
+                ge = new GlowingEarth();
             }
-            ge = new GlowingEarth();
             return ge;
         }
 
-        public GlowingEarth()
+        /*----------------------------Konstruktor------------------------*/
+        private GlowingEarth()
         {
             InitializeComponent();
             tags = new ObservableCollection<Model.Etiquette>();
@@ -229,7 +250,7 @@ namespace WorldResources
                 Model.Resource res = (Model.Resource)listView.ItemContainerGenerator.
                     ItemFromContainer(listViewItem);
 
-                dragItem = new Model.MapItem(res.getName(), res.getIco());
+                dragItem = new Model.MapItem(res.getMark(), res.getName(), res.getIco());
 
                 DataObject dragData = new DataObject("myFormat", dragItem);
                 DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
@@ -260,7 +281,7 @@ namespace WorldResources
 
         private void can_Drop(object sender, DragEventArgs e)
         {
-            Point p = new Point(e.GetPosition(map).X - 25, e.GetPosition(map).Y - 25);
+            Point p = new Point(e.GetPosition(map).X-45, e.GetPosition(map).Y-50);
             if (p.X < 0)
             {
                 p.X = 0;
@@ -269,22 +290,25 @@ namespace WorldResources
             {
                 p.Y = 0;
             }
+
             if (SearchPosition(e.GetPosition(map))==null && !move)
             {
                 dragItem.setPosition(p);
                 resOnCanvas.Add(dragItem);
             }
-            else if(SearchPosition(e.GetPosition(map)) != null && move)
+            else if(SearchPosition(p) != null && move)
             {
                 dragItem.setPosition(mi.getPosition());
                 move = false;
             }
-            else if(SearchPosition(e.GetPosition(map)) == null && move)
+            else if(SearchPosition(p) == null && move)
             {
                 resOnCanvas.Remove(dragItem);
                 dragItem.setPosition(p);
                 resOnCanvas.Add(dragItem);
             }
+            Console.WriteLine("Item spusten na X:" + p.X + " Y:" + p.Y);
+            move = false;
         }
 
         private void can_DragOver(object sender, DragEventArgs e)
@@ -298,19 +322,17 @@ namespace WorldResources
 
         private void map_MouseMove(object sender, MouseEventArgs e)
         {
+            //Console.WriteLine("X:" + e.GetPosition(map).X + " Y:" + e.GetPosition(map).Y);
             Point mousePos = e.GetPosition(map);
-            //Console.WriteLine("X:" + mousePos.X + " Y:" + mousePos.Y);
             if (e.LeftButton == MouseButtonState.Pressed &&
                 (Math.Abs(mousePos.X) > SystemParameters.MinimumHorizontalDragDistance ||
                  Math.Abs(mousePos.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 Console.WriteLine("WASAAAP");
                 ItemsControl itemsControl = sender as ItemsControl;
-                //dragItem = SearchPosition(startPoint);
                
                 if (dragItem != null)
                 {
-                   // MessageBox.Show("Jaoo mati","wazap", MessageBoxButton.OK);
                     DataObject dragData = new DataObject("myFormat", dragItem);
                     move = true;
                     DragDrop.DoDragDrop(itemsControl, dragData, DragDropEffects.Move);
@@ -320,25 +342,40 @@ namespace WorldResources
 
         private Model.MapItem SearchPosition(Point point)
         {
-            point.X = point.X - 25;
-            point.Y = point.Y - 25;
             Model.MapItem ret=null;
             foreach (Model.MapItem m in resOnCanvas)
             {
+                bool pointIsLefter = false;
+                bool pointIsUpper = false;
+                if (point.X < m.getPosition().X)
+                {
+                    pointIsLefter = true;
+                }
+                if(point.X < m.getPosition().Y)
+                {
+                    pointIsUpper = true;
+                }
                 if(point.X==m.getPosition().X && point.Y==m.getPosition().Y && dragItem.name == m.name)
                 {
                     continue;
                 }
                 if (!move)
                 {
-                    if (Math.Abs(point.X - m.position.X) <= 25 && Math.Abs(point.Y - m.position.Y) <= 25)
+                    if (pointIsLefter || pointIsUpper)
                     {
-                        ret = m;
+                        continue;
+                    }
+                    else
+                    {
+                        if (Math.Abs(point.X - m.position.X) <= 100 && Math.Abs(point.Y - m.position.Y) <= 90)
+                        {
+                            ret = m;
+                        }
                     }
                 }
                 else
                 {
-                    if (Math.Abs(point.X - m.position.X) <= 38 && Math.Abs(point.Y - m.position.Y) <= 38)
+                    if (Math.Abs(point.X - m.position.X) <= 65 && Math.Abs(point.Y - m.position.Y) <= 60)
                     {
                         ret = m;
                     }
@@ -352,7 +389,7 @@ namespace WorldResources
             dragItem = SearchPosition(e.GetPosition(map));
             if (dragItem != null)
             {
-                mi = new Model.MapItem(dragItem.name, dragItem.path);
+                mi = new Model.MapItem(dragItem.getID(), dragItem.getName(), dragItem.getPath());
                 mi.setPosition(dragItem.getPosition());
                 move = true;
             }
@@ -364,8 +401,49 @@ namespace WorldResources
 
         private void map_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            searchMode = clickState.FIND_ITEM;
             Model.MapItem m = SearchPosition(e.GetPosition(map));
             resOnCanvas.Remove(m);
+        }
+
+        private void Viewbox_MouseMove(object sender, MouseEventArgs e)
+        {
+            Console.WriteLine("X:" + e.GetPosition(map).X + " Y:" + e.GetPosition(map).Y);
+        }
+
+        public ObservableCollection<Model.Resource> getResources()
+        {
+            return _resources;
+        }
+        public ObservableCollection<Model.Type> getTypes()
+        {
+            return _types;
+        }
+        public ObservableCollection<Model.Etiquette> getTags()
+        {
+            return _tags;
+        }
+
+        public ObservableCollection<Model.MapItem> getMapItems()
+        {
+            return _resOnCanvas;
+        }
+
+        public void setTitle(string t)
+        {
+            _title = t;
+        }
+        public string getTitle()
+        {
+            return _title;
+        }
+        public string getSerPath()
+        {
+            return serPath;
+        }
+        public void setSerPath(string sp)
+        {
+            serPath = sp;
         }
     }
 }
