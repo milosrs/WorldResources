@@ -1,0 +1,30 @@
+﻿<Window x:Class="WorldResources.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorldResources"
+        mc:Ignorable="d"
+        Title="Login" Height="424" Width="525"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a1a"
+        ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="62*"/>
+            <ColumnDefinition Width="393*"/>
+            <ColumnDefinition Width="62*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="UsernameLabel" Content="Username" HorizontalAlignment="Left" Margin="168,150,0,210" VerticalAlignment="Center" Grid.Column="2" Height="33" Width="76" IsEnabled="False" Foreground="#FF79A7AC"/>
+        <Label x:Name="PWLabel" Content="Password" HorizontalAlignment="Center" Margin="169,227,159,0" VerticalAlignment="Top" Width="67" IsEnabled="False" Foreground="#FF79A7AC" Grid.Column="2" Height="26" RenderTransformOrigin="0.164,0.385"/>
+        <TextBox x:Name="UserBox" HorizontalAlignment="Left" Height="23" Margin="0,188,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="393" Grid.Column="2" KeyDown="UserBox_KeyDown" />
+        <PasswordBox x:Name="PwBox" HorizontalAlignment="Left" Height="23" Margin="0,258,0,0" VerticalAlignment="Top" Width="393" Grid.Column="2" KeyDown="PwBox_KeyDown"/>
+        <Button x:Name="Login" Content="Login" Grid.Column="2" HorizontalAlignment="Left" Margin="161,345,0,0" VerticalAlignment="Top" Width="75" BorderBrush="#7DF9FF" Foreground="Black" Click="Login_Click"/>
+        <Label x:Name="Error" Grid.Column="2" Margin="229,301,10,0" VerticalAlignment="Top" Height="28" Width="218" HorizontalAlignment="Center" Foreground="Red" IsEnabled="False" Grid.ColumnSpan="2"/>
+        <Image x:Name="GlowingEarh_png" Grid.Column="2" Margin="133,0,123,256" Source="/r/GlowingEarh.png" Stretch="Fill"/>
+        <Button x:Name="SignUp" Content="Sign Up" Grid.Column="2" HorizontalAlignment="Left" Margin="310,345,0,0" VerticalAlignment="Top" Width="75" Click="SignUp_Click"/>
+        <Label x:Name="Reg_success" Grid.Column="2" Margin="229,301,10,0" VerticalAlignment="Top" Height="28" Width="218" HorizontalAlignment="Center" Content="" Foreground="Cyan" IsEnabled="False" Grid.ColumnSpan="2"/>
+        
+    </Grid>
+</Window>

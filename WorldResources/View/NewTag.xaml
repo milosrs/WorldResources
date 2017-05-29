@@ -1,0 +1,35 @@
+﻿<Window xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"  x:Class="WorldResources.View.NewTag"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorldResources.View"
+        mc:Ignorable="d"
+        Title="New Tag" Height="416.4" Width="668.8"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a1a"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="79*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="403*"/>
+            <RowDefinition Height="48*"/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="IDl" Content="ID" HorizontalAlignment="Left" Margin="14,65,0,0" VerticalAlignment="Top" Height="26" Width="80" FontSize="13" Foreground="#FF79A7AC" RenderTransformOrigin="0.5,0.5"/>
+        <Label x:Name="Iconl" Content="Color" HorizontalAlignment="Left" Margin="14,111,0,0" VerticalAlignment="Top" Height="26" Width="80" FontSize="13" Foreground="#FF79A7AC"/>
+        <TextBox x:Name="IDbox" HorizontalAlignment="Left" Height="26" Margin="54,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="300" Grid.Column="1" PreviewKeyDown="IDbox_PreviewKeyDown" TextChanged="IDbox_TextChanged"/>
+        <TextBox x:Name="descBox" HorizontalAlignment="Left" Height="126" Margin="54,164,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="300" Grid.Column="1"/>
+        <Label x:Name="Desc" Content="Description" HorizontalAlignment="Left" Margin="14,164,0,0" VerticalAlignment="Top" Height="26" Width="80" FontSize="13" Foreground="#FF79A7AC"/>
+        <Button x:Name="ok" Content="Add" HorizontalAlignment="Left" Margin="365,9,0,0" VerticalAlignment="Top" Width="84" Height="22" Grid.Row="1" Grid.Column="1" Click="ok_Click"/>
+        <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="475,9,0,0" VerticalAlignment="Top" Width="84" Height="22" Grid.Row="1" Grid.Column="1" Click="cancel_Click"/>
+        <xctk:ColorPicker Name="colorp" Grid.Column="1" Margin="54,111,469,204" />
+        <Label x:Name="Errl" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="390,264,0,0" VerticalAlignment="Top" Foreground="Red" />
+        <Label x:Name="label" Content="*" FontSize="20" Foreground="Red" Grid.Column="1" HorizontalAlignment="Left" Margin="365,57,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy" Content="*" FontSize="20" Foreground="Red" Grid.Column="1" HorizontalAlignment="Left" Margin="365,105,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Error" Content="" Foreground="Red" Grid.Column="1" HorizontalAlignment="Left" Margin="390,57,0,0" VerticalAlignment="Top" Width="179"/>
+    </Grid>
+</Window>

@@ -1,0 +1,63 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorldResources.View"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="WorldResources.View.TagEditor"
+        mc:Ignorable="d"
+        Title="Edit Tags" Height="480" Width="742"
+        WindowStartupLocation="CenterScreen"
+        Background="#1a1a1a"
+        ResizeMode="NoResize" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="155*"/>
+            <RowDefinition Height="78*"/>
+            <RowDefinition Height="31*"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" Background="#1a1a1a" Foreground="Black" ItemsSource="{Binding tags}" SelectedItem="{Binding Path=selectedTag, Mode=TwoWay}" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True" BorderBrush="Black" BorderThickness="5" Margin="0,0,0,10">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="ID" Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding mark}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Color" Width="70" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Background="{Binding colCod}" BorderThickness="2" BorderBrush="Gray" Width="20"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="375*"/>
+                <ColumnDefinition Width="211*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="ID" Foreground="Aqua" Margin="4,6,1,4"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Color" Foreground="Aqua" Margin="4,10,1,0"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Description" Foreground="Aqua" Margin="4,2,1,0"/>
+            <TextBox Name="IDbox" IsEnabled="False" Text="{Binding selectedTag.mark}" Grid.Row="0" Width="auto" Height="auto" Margin="87,10,23,10" Grid.ColumnSpan="2" />
+            <TextBox Name="descBox" Grid.Row="2" Text="{Binding selectedTag.desc}"  Width="auto" Height="auto" Margin="87,6,23,14" Grid.ColumnSpan="2" />
+            <xctk:ColorPicker Name="colorPicker" SelectedColor="{Binding Path=selectedTag.colCod, Mode=OneWay}" HorizontalAlignment="Left" Margin="87,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="37"/>
+            <Label x:Name="Error" Content="" Foreground="Red" HorizontalAlignment="Left" Margin="95,8,0,0" VerticalAlignment="Top" Width="106" Grid.Column="2"/>
+            <TextBox x:Name="searchBox" Grid.Column="2" Foreground="Gray" HorizontalAlignment="Stretch" Height="23" Margin="10,11,10,0" TextWrapping="Wrap" Text="Search for tags..." VerticalAlignment="Top" TextChanged="searchBox_TextChanged" GotFocus="searchBox_GotFocus" LostFocus="searchBox_LostFocus"/>
+        </Grid>
+        <Button x:Name="modify" Content="Modify" HorizontalAlignment="Left" Margin="549,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="modify_Click"/>
+        <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="640,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="cancel_Click"/>
+        <Button x:Name="delete" Content="Delete" HorizontalAlignment="Left" Margin="92,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="74" Click="delete_Click"/>
+    </Grid>
+</Window>

@@ -1,0 +1,134 @@
+﻿<Window x:Class="WorldResources.GlowingEarth"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorldResources"
+        xmlns:data="clr-namespace:WorldResources.Model"
+        mc:Ignorable="d"
+        Title="Glowing Earth" 
+        Background="#1a1a1a"
+        WindowStartupLocation="CenterScreen"
+        Icon="/r/globe.ico" Loaded="Window_Loaded"
+        ResizeMode="CanMinimize">
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel HorizontalAlignment="Stretch"></DockPanel>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="File">
+                <MenuItem Header="New map"></MenuItem>
+                <MenuItem Header="Load map"></MenuItem>
+                <MenuItem Header="Save"></MenuItem>
+                <MenuItem Header="Save As"></MenuItem>
+                <MenuItem Header="Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem x:Name="ResEditor" Header="Edit Resources" Click="ResEditor_Click" />
+                <MenuItem x:Name="TypEditor" Header="Edit Types" Click="TypEditor_Click"/>
+                <MenuItem x:Name="TagEditor" Header="Edit Etiquettes" Click="TagEditor_Click"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Documentation"></MenuItem>
+                <MenuItem Header="About"></MenuItem>
+            </MenuItem>
+            <MenuItem IsCheckable="True" IsEnabled="False" ></MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="67*"/>
+                <RowDefinition Height="575*"/>
+                <RowDefinition Height="29*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1003*"/>
+                <ColumnDefinition Width="269*"/>
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl x:Name="map" Margin="10,23,0,0" Grid.Row="1" ItemsSource="{Binding Path=resOnCanvas}" AllowDrop="True" DragEnter="can_DragEnter" Drop="can_Drop" DragOver="can_DragOver" MouseMove="map_MouseMove" PreviewMouseDown="map_PreviewMouseDown" PreviewMouseRightButtonDown="map_PreviewMouseRightButtonDown" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Name="canMap">
+                            <Canvas.Background>
+                                <ImageBrush ImageSource="/r/map.jpg"></ImageBrush>
+                            </Canvas.Background>
+                        </Canvas>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding position.X}" />
+                        <Setter Property="Canvas.Top" Value="{Binding position.Y}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type data:MapItem}" >
+                        <StackPanel HorizontalAlignment="Center" Opacity="0.9" Height="90" Background="{Binding Path=highlight}">
+                            <Image Width="50" Height="50" Stretch="Fill" Source="{Binding path}" Margin="5" />
+                            <TextBlock TextAlignment="Center" Text="{Binding name}" FontStyle="Oblique" Foreground="Wheat" FontWeight="Bold" Margin="2"  />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!--Image x:Name="map" HorizontalAlignment="Stretch" Margin="15,0,10,10" Grid.Row="1" VerticalAlignment="Stretch" Source="/r/map.jpg" Grid.RowSpan="2"/>
+            <Canvas Name="can" Background="Transparent" Margin="15,23,10,0" Grid.Row="1" /!-->
+
+            <ToolBar Grid.Row="0" x:Name="toolBar" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Stretch" Grid.ColumnSpan="2">
+                <Button Name="Add" Click="Add_Click" ToolTip="New Resource">
+                    <Image Source="/r/resource.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="Type" Click="Type_Click" ToolTip="New Type">
+                    <Image Source="/r/type.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="Etiq" Click="Etiq_Click" ToolTip="New Tag">
+                    <Image Source="/r/etiq.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="NewFile" ToolTip="New map">
+                    <Image Source="/r/newFile.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="LoadProject" ToolTip="Load map">
+                    <Image Source="/r/open.png" Stretch="Fill" />
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="Save" ToolTip="Save map">
+                    <Image Source="/r/saveFile.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="SaveAs" ToolTip="Save map as">
+                    <Image Source="/r/saveAs.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="Delete" ToolTip="Delete map">
+                    <Image Source="/r/deleteItem.png" Stretch="Fill"/>
+                </Button>
+                <Separator Background="Transparent" Width="5" />
+                <Button Name="About" Click="About_Click" ToolTip="About">
+                    <Image Source="/r/about.png" />
+                </Button>
+                <Separator Background="Transparent" Width="5"/>
+                <Button Name="Help" ToolTip="Help">
+                    <Image Source="/r/help.png"  />
+                </Button>
+            </ToolBar>
+            <ListView x:Name="itemList" Grid.Column="1" HorizontalAlignment="Stretch" Margin="7,23,6,0" Grid.Row="1" VerticalAlignment="Stretch" Background="#324251" ItemsSource="{Binding Path=resources}" FontSize="16" Foreground="Wheat" PreviewMouseLeftButtonDown="itemList_PreviewMouseLeftButtonDown" MouseMove="itemList_MouseMove"  >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding ico}" Width="70" Height="70"></Image>
+                            <Separator Width="3" Background="Transparent"/>
+                            <TextBlock Text="{Binding name}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </DockPanel>
+
+</Window>
