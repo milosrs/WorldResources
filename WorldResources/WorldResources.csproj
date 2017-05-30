@@ -14,6 +14,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -105,10 +105,16 @@
     <Compile Include="Controler\AddRessControler.cs" />
     <Compile Include="Controler\AddTypeControler.cs" />
     <Compile Include="Controler\DeleteControler.cs" />
+    <Compile Include="Controler\DeleteProjectControler.cs" />
+    <Compile Include="Controler\LoadProjectControler.cs" />
     <Compile Include="Controler\ModifyControler.cs" />
+    <Compile Include="Controler\NewProjectControler.cs" />
     <Compile Include="Controler\PicChanger.cs" />
+    <Compile Include="Controler\SaveProjectAsControler.cs" />
+    <Compile Include="Controler\SaveProjectControler.cs" />
     <Compile Include="Model\Etiquette.cs" />
     <Compile Include="Model\MapItem.cs" />
+    <Compile Include="Model\MasterClass.cs" />
     <Compile Include="Model\ObservableObject.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\Type.cs" />
@@ -119,6 +125,9 @@
       <DependentUpon>GlowingEarth.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controler\RegisterControl.cs" />
+    <Compile Include="View\NewProjectDialog.xaml.cs">
+      <DependentUpon>NewProjectDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NewRes.xaml.cs">
       <DependentUpon>NewRes.xaml</DependentUpon>
     </Compile>
@@ -161,6 +170,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\NewProjectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\NewRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
