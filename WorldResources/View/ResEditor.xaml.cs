@@ -59,9 +59,9 @@ namespace WorldResources.View
         {
             refer = ge;
             InitializeComponent();
-            res = ge.resources;
-            types = ge.types;
-            tags = ge.tags;
+            res = ge.getMaster().resources;
+            types = ge.getMaster().types;
+            tags = ge.getMaster().tags;
 
             filter.Items.Add(null);
             if (types.Count > 0)
@@ -74,7 +74,7 @@ namespace WorldResources.View
                 
             }
             copy = new ObservableCollection<Model.Resource>();
-            foreach(Model.Resource r in refer.resources)
+            foreach(Model.Resource r in ge.getMaster().resources)
             {
                 copy.Add(r);
             }
@@ -178,7 +178,8 @@ namespace WorldResources.View
             MessageBoxResult mbr = System.Windows.MessageBox.Show("Are you sure?", "Confirm Deletion", MessageBoxButton.YesNo);
             if (mbr == MessageBoxResult.Yes)
             {
-                Controler.DeleteControler dc = new Controler.DeleteControler(_selectedResource, refer);
+                Controler.DeleteControler dc = new Controler.DeleteControler(_selectedResource);
+                GlowingEarth.getInstance().getMaster().notifyChange();
             }
         }
 
@@ -189,12 +190,13 @@ namespace WorldResources.View
 
         private void modify_Click(object sender, RoutedEventArgs e)
         {
-            Controler.ModifyControler mc = new Controler.ModifyControler(this, refer);
+            Controler.ModifyControler mc = new Controler.ModifyControler(this);
             if (mc.getSucc())
             {
                 System.Windows.MessageBox.Show("Resource modified successfully!", "Success!", MessageBoxButton.OK);
-                Error.Content = false;
+                Error.Content ="";
             }
+            GlowingEarth.getInstance().getMaster().notifyChange();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -299,7 +301,7 @@ namespace WorldResources.View
             if (filt != null)
             {
                 ObservableCollection<Model.Resource> resez = new ObservableCollection<Model.Resource>();
-                foreach (Model.Resource r in refer.resources)
+                foreach (Model.Resource r in refer.getMaster().resources)
                 {
                     if (r.getType().getMark().Equals(filt.getMark()))
                     {
@@ -334,7 +336,7 @@ namespace WorldResources.View
             if (res != null)
             {
                 ObservableCollection<Model.Resource> resez = new ObservableCollection<Model.Resource>();
-                foreach (Model.Resource r in refer.resources)
+                foreach (Model.Resource r in refer.getMaster().resources)
                 {
                     if (r.getMark().Contains(searchBox.Text))
                     {

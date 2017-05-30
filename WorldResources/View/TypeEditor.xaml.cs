@@ -52,12 +52,12 @@ namespace WorldResources.View
         {
             refer = ge;
             copy = new ObservableCollection<Model.Type>();
-            foreach(Model.Type t in refer.types)
+            foreach(Model.Type t in refer.getMaster().types)
             {
                 copy.Add(t);
             }
             InitializeComponent();
-            tyx = ge.types;
+            tyx = ge.getMaster().types;
             ShowDialog();
         }
 
@@ -82,11 +82,12 @@ namespace WorldResources.View
 
         private void modify_Click(object sender, RoutedEventArgs e)
         {
-            Controler.ModifyControler mc = new Controler.ModifyControler(this, refer);
+            Controler.ModifyControler mc = new Controler.ModifyControler(this);
             if (mc.getSucc())
             {
                 System.Windows.MessageBox.Show("Type modified successfully!", "Success!", MessageBoxButton.OK);
                 Error.Content = "";
+                GlowingEarth.getInstance().getMaster().notifyChange();
             }
             else
             {
@@ -100,7 +101,8 @@ namespace WorldResources.View
             MessageBoxResult mbr = System.Windows.MessageBox.Show("Are you sure you want to delete this type? This could lead to deletion of resources that contain this type.", "Confirm Deletion", MessageBoxButton.YesNo);
             if (mbr == MessageBoxResult.Yes)
             {
-                Controler.DeleteControler dec = new Controler.DeleteControler(_selType, refer);
+                Controler.DeleteControler dec = new Controler.DeleteControler(_selType);
+                GlowingEarth.getInstance().getMaster().notifyChange();
             }
         }
 
@@ -150,7 +152,7 @@ namespace WorldResources.View
             if (tyx != null)
             {
                 ObservableCollection<Model.Type> typez = new ObservableCollection<Model.Type>();
-                foreach (Model.Type t in refer.types)
+                foreach (Model.Type t in refer.getMaster().types)
                 {
                     if (t.getMark().Contains(searchBox.Text))
                     {

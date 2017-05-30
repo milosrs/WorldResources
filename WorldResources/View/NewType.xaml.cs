@@ -66,6 +66,7 @@ namespace WorldResources.View
                     descBox.Text = "";
                     icoPath.Text = "";
                     Error.Content = "";
+                    GlowingEarth.getInstance().getMaster().notifyChange();
                 }
             }
         }
@@ -130,7 +131,7 @@ namespace WorldResources.View
             String curText = IDbox.Text;
             bool found = false;
 
-            foreach (Model.Type r in ge.types)
+            foreach (Model.Type r in GlowingEarth.getInstance().getMaster().types)
             {
                 if (r.getMark().Equals(curText))
                 {

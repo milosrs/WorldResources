@@ -15,10 +15,6 @@ namespace WorldResources.Controler
     public class AddEtiqControler
     {
         private Model.Etiquette e;
-        private ObservableCollection<Model.Etiquette> taglist;
-        private string path;
-        private BinaryFormatter fm;
-        private FileStream sm = null;
         private bool success = false;
         private View.NewTag wind;
 
@@ -35,25 +31,13 @@ namespace WorldResources.Controler
                 return;
             }
 
-            fm = new BinaryFormatter();
-            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tagList");
-
-            if(File.Exists(path))
-            {
-                sm = File.Open(path, FileMode.OpenOrCreate);
-                taglist = (ObservableCollection<Model.Etiquette>)fm.Deserialize(sm);
-                sm.Dispose();
-                sm.Close();
-            }
-            else
-            {
-                taglist = new ObservableCollection<Model.Etiquette>();
-            }
+            
 
             if (chckTag())
             {
                 addTag();
                 success = true;
+                GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
                 return;
             }
             else
@@ -76,7 +60,7 @@ namespace WorldResources.Controler
 
         public bool chckTag()
         {
-            foreach(Etiquette t in taglist)
+            foreach(Etiquette t in GlowingEarth.getInstance().getMaster().getTags())
             {
                 if (t.getID().Equals(e.getID()))
                 {
@@ -89,27 +73,8 @@ namespace WorldResources.Controler
 
         public void addTag()
         {
-            taglist.Add(e);
-            try
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, taglist);
-                sm.Dispose();
-                sm.Close();
-            }
-            catch
-            {
-                success = false;
-                return;
-            }
-            finally
-            {
-                if (sm != null)
-                {
-                    sm.Dispose();
-                    sm.Close();
-                }
-            }
+            GlowingEarth.getInstance().getMaster().getTags().Add(e);
+            success = true;
         }
         public bool getSuccess()
         {

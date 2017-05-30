@@ -1,0 +1,25 @@
+﻿<Window x:Class="WorldResources.View.NewProjectDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WorldResources.View"
+        mc:Ignorable="d"
+        Title="Create new project" Height="267.6" Width="417.6" ResizeMode="NoResize" Background="#1a1a1a" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="159*"/>
+            <ColumnDefinition Width="67*"/>
+            <ColumnDefinition Width="68*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="126*"/>
+            <RowDefinition Height="145*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="label" Content="Map name :" Foreground="Aqua" FontSize="15" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Height="36" Width="101"/>
+        <TextBox x:Name="nameBox" FontSize="15" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="23" Margin="116,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="286"/>
+        <Button x:Name="createBtn" FontSize="15" Content="Create" Grid.Column="1" HorizontalAlignment="Left" Margin="9,94,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="createBtn_Click"/>
+        <Button x:Name="cancelBtn" FontSize="15" Content="Cancel" Grid.Column="2" HorizontalAlignment="Left" Margin="10,94,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"/>
+
+    </Grid>
+</Window>

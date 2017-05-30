@@ -16,79 +16,25 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.ObjectModel;
 using WorldResources.View;
 using System.ComponentModel;
+using WorldResources.Controler;
+using System.Collections.Specialized;
 
 namespace WorldResources
 {
     /// <summary>
     /// Interaction logic for GlowingEarth.xaml
     /// </summary>
-    enum clickState { FIND_ITEM, LIST_TO_MAP, MAP_TO_MAP}           //Pomaze nam pri Drag and Drop
-                                                                    //Find Item ce hvatati tacke od gornjeg levog do donjeg desnog coska slike.
-                                                                    //List to map ce hvatati tacke svih itema koji su na mapi od gornjeg levog do donjeg desnog coska slike.
-                                                                    //Map to map ce ignorisati dragItem==m situaciju
+    /// 
+    [Serializable]
     public partial class GlowingEarth : Window, INotifyPropertyChanged
     {
-        private ObservableCollection<Model.Etiquette> _tags;        //tagovi
-        private ObservableCollection<Model.Resource> _resources;    //resursi
-        private ObservableCollection<Model.Type> _types;            //tipovi
+        
         private Model.MapItem _dragItem;                            //Sta se vuce - referenca
         private Model.MapItem mi;                                   //Ono sto se vuce sa mape - zaseban objekat kopija
         private Point startPoint = new Point();                     //Klik tacka
-        private ObservableCollection<Model.MapItem> _resOnCanvas;   //Resursi koji su na kanvasu
-        private clickState searchMode;                              //Enum odgore
         private bool move;                                          //Da li se ono na mapi pomera ili ne
-        private string _title;                                      //Ime projekta
-        private string serPath;
-
+        private Model.MasterClass _mc;
         /*--------------------------Binding-----------------------------*/
-        public ObservableCollection<Model.Etiquette> tags
-        {
-            get
-            {
-                return _tags;
-            }
-            set
-            {
-                _tags = value;
-                OnPropertyChanged("tags");
-            }
-        }
-        public ObservableCollection<Model.Resource> resources
-        {
-            get
-            {
-                return _resources;
-            }
-            set
-            {
-                _resources = value;
-                OnPropertyChanged("resources");
-            }
-        }
-        public ObservableCollection<Model.Type> types
-        {
-            get
-            {
-                return _types;
-            }
-            set
-            {
-                _types = value;
-                OnPropertyChanged("types");
-            }
-        }
-        public ObservableCollection<Model.MapItem> resOnCanvas
-        {
-            get
-            {
-                return _resOnCanvas;
-            }
-            set
-            {
-                _resOnCanvas = value;
-                OnPropertyChanged("resOnCanvas");
-            }
-        }
         public Model.MapItem dragItem
         {
             get
@@ -101,16 +47,16 @@ namespace WorldResources
                 OnPropertyChanged("dragItem");
             }
         }
-        public string title
+        public Model.MasterClass mc
         {
             get
             {
-                return _title;
+                return _mc;
             }
             set
             {
-                _title = value;
-                OnPropertyChanged("title");
+                _mc = value;
+                OnPropertyChanged("mc");
             }
         }
         /*----------------------------Save--------------------------*/
@@ -143,10 +89,8 @@ namespace WorldResources
         private GlowingEarth()
         {
             InitializeComponent();
-            tags = new ObservableCollection<Model.Etiquette>();
-            resources = new ObservableCollection<Model.Resource>();
-            types = new ObservableCollection<Model.Type>();
-            resOnCanvas = new ObservableCollection<Model.MapItem>();
+            mc = new Model.MasterClass();
+            _mc = new Model.MasterClass();
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
@@ -159,26 +103,22 @@ namespace WorldResources
         {
             View.NewRes nr = new View.NewRes(this);
             nr.ShowDialog();
-            refresh();
         }
 
         private void Type_Click(object sender, RoutedEventArgs e)
         {
             View.NewType nt = new View.NewType(this);
             nt.ShowDialog();
-            refresh();
         }
 
         private void Etiq_Click(object sender, RoutedEventArgs e)
         {
             View.NewTag nta = new View.NewTag(this);
             nta.ShowDialog();
-            refresh();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //can.AllowDrop = true;
             refresh();
         }
         public void refresh()
@@ -188,7 +128,7 @@ namespace WorldResources
             {
                 fm = new BinaryFormatter();
                 sm = File.OpenRead(path);
-                types = (ObservableCollection<Model.Type>)fm.Deserialize(sm);
+                mc.types = (ObservableCollection<Model.Type>)fm.Deserialize(sm);
                 sm.Dispose();
                 sm.Close();
             }
@@ -197,7 +137,7 @@ namespace WorldResources
             {
                 fm = new BinaryFormatter();
                 sm = File.OpenRead(path);
-                tags = (ObservableCollection<Model.Etiquette>)fm.Deserialize(sm);
+                mc.tags = (ObservableCollection<Model.Etiquette>)fm.Deserialize(sm);
                 sm.Dispose();
                 sm.Close();
             }
@@ -206,7 +146,7 @@ namespace WorldResources
             {
                 fm = new BinaryFormatter();
                 sm = File.OpenRead(path);
-                resources = (ObservableCollection<Model.Resource>)fm.Deserialize(sm);
+                mc.resources = (ObservableCollection<Model.Resource>)fm.Deserialize(sm);
                 sm.Dispose();
                 sm.Close();
             }
@@ -214,14 +154,27 @@ namespace WorldResources
             this.DataContext = this;
         }
 
+        public Model.MasterClass getMaster()
+        {
+            return _mc;
+        }
+
+        public void setMaster(Model.MasterClass mcc)
+        {
+            _mc = mcc;
+            mc = _mc;
+        }
+
         private void ResEditor_Click(object sender, RoutedEventArgs e)
         {
             ResEditor re = new ResEditor(this);
+            //resetCanvas();
         }
 
         private void TypEditor_Click(object sender, RoutedEventArgs e)
         {
             TypeEditor type = new TypeEditor(this);
+            //resetCanvas();
         }
 
         private void TagEditor_Click(object sender, RoutedEventArgs e)
@@ -294,7 +247,7 @@ namespace WorldResources
             if (SearchPosition(e.GetPosition(map))==null && !move)
             {
                 dragItem.setPosition(p);
-                resOnCanvas.Add(dragItem);
+                mc.resOnCanvas.Add(dragItem);
             }
             else if(SearchPosition(p) != null && move)
             {
@@ -303,12 +256,13 @@ namespace WorldResources
             }
             else if(SearchPosition(p) == null && move)
             {
-                resOnCanvas.Remove(dragItem);
+                mc.resOnCanvas.Remove(dragItem);
                 dragItem.setPosition(p);
-                resOnCanvas.Add(dragItem);
+                mc.resOnCanvas.Add(dragItem);
             }
             Console.WriteLine("Item spusten na X:" + p.X + " Y:" + p.Y);
             move = false;
+            GlowingEarth.getInstance().getMaster().notifyChange();
         }
 
         private void can_DragOver(object sender, DragEventArgs e)
@@ -343,7 +297,7 @@ namespace WorldResources
         private Model.MapItem SearchPosition(Point point)
         {
             Model.MapItem ret=null;
-            foreach (Model.MapItem m in resOnCanvas)
+            foreach (Model.MapItem m in mc.resOnCanvas)
             {
                 bool pointIsLefter = false;
                 bool pointIsUpper = false;
@@ -401,72 +355,41 @@ namespace WorldResources
 
         private void map_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            searchMode = clickState.FIND_ITEM;
             Model.MapItem m = SearchPosition(e.GetPosition(map));
-            resOnCanvas.Remove(m);
+            mc.resOnCanvas.Remove(m);
         }
 
         private void Viewbox_MouseMove(object sender, MouseEventArgs e)
         {
             Console.WriteLine("X:" + e.GetPosition(map).X + " Y:" + e.GetPosition(map).Y);
         }
-        /*----------------------------List geteri------------------------*/
-        public ObservableCollection<Model.Resource> getResources()
+        
+        /*-------------------Akcije-------------------*/
+        private void NewFile_Click(object sender, RoutedEventArgs e)
         {
-            return _resources;
-        }
-        public ObservableCollection<Model.Type> getTypes()
-        {
-            return _types;
-        }
-        public ObservableCollection<Model.Etiquette> getTags()
-        {
-            return _tags;
+            NewProjectDialog npd = new NewProjectDialog();
+            npd.ShowDialog();
         }
 
-        public ObservableCollection<Model.MapItem> getMapItems()
+        private void LoadProject_Click(object sender, RoutedEventArgs e)
         {
-            return _resOnCanvas;
-        }
-        /*----------------------------List seteri------------------------*/
-        public void setResources(ObservableCollection<Model.Resource> res)
-        {
-            _resources=res;
-            resources = _resources;
-        }
-        public void setTypes(ObservableCollection<Model.Type> t)
-        {
-            _types=t;
-            types = _types;
-        }
-        public void setTags(ObservableCollection<Model.Etiquette> e)
-        {
-            _tags = e;
-            tags = _tags;
+            LoadProjectControler lpc = new LoadProjectControler();
+            setMaster(mc);
         }
 
-        public void setMapItems(ObservableCollection<Model.MapItem> mi)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-            _resOnCanvas = mi;
-            resOnCanvas = _resOnCanvas;
+            SaveProjectControler spc = new SaveProjectControler();
         }
 
-        public void setTitle(string t)
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
-            _title = t;
-            title = _title;
+            SaveProjectAsControler spac = new SaveProjectAsControler();
         }
-        public string getTitle()
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            return _title;
-        }
-        public string getSerPath()
-        {
-            return serPath;
-        }
-        public void setSerPath(string sp)
-        {
-            serPath = sp;
+            DeleteProjectControler dpc = new DeleteProjectControler();
         }
     }
 }

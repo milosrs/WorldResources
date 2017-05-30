@@ -21,62 +21,106 @@ namespace WorldResources.Controler
         private View.TypeEditor te;
         private View.TagEditor tage;
 
-        public ModifyControler(View.ResEditor resed, GlowingEarth ge)
+        public ModifyControler(View.ResEditor resed)
         {
             re = resed;
-            if ((res = makeRes()) != null)
+            res = makeRes();
+            if (res != null)
             {
-                for (int i = 0; i < ge.resources.Count; i++)
+                for (int i = 0; i < GlowingEarth.getInstance().getMaster().getResources().Count; i++)
                 {
-                    if (res.getMark().Equals(ge.resources[i].getMark()))
+                    if (res.getMark().Equals(GlowingEarth.getInstance().getMaster().getResources()[i].getMark()))
                     {
-                        ge.resources[i] = res;
-                        success = saveList(ge.resources);
+                        GlowingEarth.getInstance().getMaster().getResources()[i] = res;
                         break;
                     }
                     
                 }
             }
+            else
+            {
+                success = false;
+                return;
+            }
+
+            foreach(Model.MapItem mi in GlowingEarth.getInstance().getMaster().getMapItems())
+            {
+                if (mi.getID().Equals(res.getMark()))
+                {
+                    mi.setName(res.getName());
+                    mi.setPath(res.getIco());
+                }
+            }
+            success = true;
+            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
         }
-        public ModifyControler(View.TypeEditor resed, GlowingEarth ge)
+        public ModifyControler(View.TypeEditor resed)
         {
             te = resed;
+
             if ((type = makeType()) != null)
             {
-                for (int i = 0; i < ge.types.Count; i++)
+                for (int i = 0; i < GlowingEarth.getInstance().getMaster().getTypes().Count; i++)
                 {
-                    if (type.getMark().Equals(ge.types[i].getMark()))
+                    if (type.getMark().Equals(GlowingEarth.getInstance().getMaster().getTypes()[i].getMark()))
                     {
-                        ge.types[i] = type;
-                        success = saveList(ge.types);
+                        GlowingEarth.getInstance().getMaster().getTypes()[i] = type;
                         break;
                     }
                 }
             }
-            foreach(Model.Resource r in ge.resources)
+            else
             {
-                if (r.getType().getMark().Equals(type.getMark()))
+                success = false;
+                return;
+            }
+
+            GlowingEarth.getInstance().itemList.Items.Refresh();
+
+            ObservableCollection<Model.Resource> temp = GlowingEarth.getInstance().getMaster().getResources();
+            for(int i=0; i<temp.Count; i++)
+            {
+                if (GlowingEarth.getInstance().getMaster().getResources()[i].getType().getMark().Equals(type.getMark()))
                 {
+                    Model.Resource r = temp[i];
                     r.setType(type);
+                    if (r.getHasTypeImg())
+                        r.setIcon(type.getImg());
+                    ObservableCollection<Model.MapItem> mapitems = GlowingEarth.getInstance().getMaster().getMapItems();
+                    for(int j=0; j<mapitems.Count; j++)
+                    {
+                        if (mapitems[j].getID().Equals(r.getMark()))
+                        {
+                            mapitems[j].setPath(r.getIco());
+                        }
+                    }
+                    GlowingEarth.getInstance().getMaster().setMapItems(mapitems);
                 }
             }
-            saveList(ge.resources);
+            GlowingEarth.getInstance().getMaster().setResources(temp);
+            success = true;
+            GlowingEarth.getInstance().map.Items.Refresh();
+            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
         }
-        public ModifyControler(View.TagEditor resed, GlowingEarth ge)
+        public ModifyControler(View.TagEditor resed)
         {
             tage = resed;
             if ((tag = makeTag()) != null){
-                for (int i = 0; i < ge.tags.Count; i++)
+                for (int i = 0; i < GlowingEarth.getInstance().getMaster().getTags().Count; i++)
                 {
-                    if (tag.getID().Equals(ge.tags[i].getID()))
+                    if (tag.getID().Equals(GlowingEarth.getInstance().getMaster().getTags()[i].getID()))
                     {
-                        ge.tags[i] = tag;
-                        success = saveList(ge.tags);
+                        GlowingEarth.getInstance().getMaster().getTags()[i] = tag;
                         break;
                     }
                 }
             }
-            foreach(Model.Resource r in ge.resources)
+            else
+            {
+                success = false;
+                return;
+            }
+            foreach(Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
             {
                 List<Model.Etiquette> temp = r.getTags();
                 int j = 0;
@@ -90,8 +134,9 @@ namespace WorldResources.Controler
                     j++;
                 }
                 r.setTags(temp);
-                saveList(ge.resources);
             }
+            success = true;
+            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
         }
 
         public bool saveList(ObservableCollection<Model.Resource> c)
@@ -226,10 +271,10 @@ namespace WorldResources.Controler
                 if (re.icoPath.Text.Equals("") || (res.getHasTypeImg()))
                 {
                     bool novo = false;
-                    foreach (Model.Type t in re.types)
+                    foreach (Model.Type t in GlowingEarth.getInstance().getMaster().types)
                     {
                         String path = t.getImg();
-                        if (path.Equals(((Model.Type)re.typeBox.SelectedItem).getImg()) && this_is_type)
+                        if ((path.Equals(((Model.Type)re.typeBox.SelectedItem).getImg()) || path.Equals("")) && this_is_type)
                         {
                             res.setIcon(res.getType().getImg());
                             res.setHasTypeImg(true);
@@ -250,12 +295,29 @@ namespace WorldResources.Controler
                 }
 
                 res.getTags().Clear();
-                foreach(Model.Etiquette e in re.tags)
+
+                bool dontModify=true;
+                List<Model.Etiquette> et = new List<Model.Etiquette>();
+                foreach (Model.Etiquette e in re.selectedResource.getTags())
                 {
                     if (e.isPartOfRes)
                     {
-                        res.getTags().Add(e);
+                        dontModify = false;
+                        et.Add(e);
                     }
+                }
+                res.setTags(et);
+                if (!dontModify)
+                {
+                    foreach (Model.Etiquette e in GlowingEarth.getInstance().getMaster().getTags())
+                    {
+                        if (e.isPartOfRes)
+                        {
+                            dontModify = false;
+                            et.Add(e);
+                        }
+                    }
+                    res.setTags(et);
                 }
             }
             else

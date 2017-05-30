@@ -55,12 +55,12 @@ namespace WorldResources.View
             pc = new PicChanger();
             InitializeComponent();
             ge = g;
-            typeBox.DataContext = ge.types;
+            typeBox.DataContext = ge.getMaster().types;
             DataContext = this;
-            tagovi = g.tags;
-            if (ge.types.Count > 0)
+            tagovi = ge.getMaster().tags;
+            if (ge.getMaster().types.Count > 0)
             {
-                foreach (Model.Type t in ge.types)
+                foreach (Model.Type t in ge.getMaster().types)
                 {
                     typeBox.Items.Add(t);
                 }
@@ -83,6 +83,7 @@ namespace WorldResources.View
             {
                 System.Windows.MessageBox.Show("Resource added successfully!", "Success!", MessageBoxButton.OK);
                 resetWindow();
+                GlowingEarth.getInstance().getMaster().notifyChange();
             }
         }
 
@@ -198,7 +199,7 @@ namespace WorldResources.View
         {
             String curText = IDBox.Text;
             bool found = false;
-            foreach (Model.Resource r in ge.resources)
+            foreach (Model.Resource r in ge.getMaster().resources)
             {
                 if (r.getMark().Equals(curText))
                 {

@@ -192,7 +192,7 @@
             </Grid>
         </ScrollViewer>
         <Button x:Name="modify" Content="Modify" HorizontalAlignment="Left" Margin="10,10,0,6" Grid.Row="2" Grid.Column="1" Width="82" Click="modify_Click"/>
-        <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="146,10,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="76" Height="28" Click="cancel_Click"/>
+        <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="146,10,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="76" Height="26" Click="cancel_Click"/>
         <Button x:Name="delete" Content="Delete" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Width="82" Height="28" Click="delete_Click"/>
 
     </Grid>

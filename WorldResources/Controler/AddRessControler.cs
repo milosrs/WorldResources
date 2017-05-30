@@ -17,17 +17,13 @@ namespace WorldResources.Controler
     public class AddRessControler
     {
         private Model.Resource res;
-        private ObservableCollection<Model.Resource> reslist;
-        private string path;
-        private BinaryFormatter fm;
-        private FileStream sm=null;
         private bool success = false;
         private View.NewRes wind;
+
         public AddRessControler(View.NewRes refer)
         {
             wind = refer;
             res = new Resource();
-            fm = new BinaryFormatter();
             if (contAdd())
             {
                 foreach (Model.Etiquette b in wind.tagovi)
@@ -92,25 +88,11 @@ namespace WorldResources.Controler
                 return;
             }
             //Resource created <-----------------------------------
-            fm = new BinaryFormatter();
-            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "reslist");
-
-            if (File.Exists(path))
-            {
-                sm = File.Open(path, FileMode.OpenOrCreate);
-                reslist = (ObservableCollection<Model.Resource>)fm.Deserialize(sm);
-                sm.Dispose();
-                sm.Close();
-            }
-            else
-            {
-                reslist = new ObservableCollection<Model.Resource>();
-            }
-
             if (chckRes())
             {
                 addRes();
                 success = true;
+                GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
             }
             else
             {
@@ -163,61 +145,15 @@ namespace WorldResources.Controler
             }
             return true;
         }
+
         private void addRes()
         {
-            reslist.Add(res);
-
-            if (File.Exists(path))
-            {
-                try
-                {
-                    sm = File.OpenWrite(path);
-                    fm.Serialize(sm, reslist);
-                    sm.Dispose();
-                    sm.Close();
-                }
-                catch
-                {
-                    success = false;
-                    return;
-                }
-                finally
-                {
-                    if (sm != null)
-                    {
-                        sm.Dispose();
-                        sm.Close();
-                    }
-                }
-            }
-            else
-            {
-                try {
-                    sm = File.OpenWrite(path);
-                    fm.Serialize(sm, reslist);
-                    sm.Dispose();
-                    sm.Close();
-                }
-                catch
-                {
-                    sm.Dispose();
-                    sm.Close();
-                    success = false;
-                }
-                finally
-                {
-                    if (sm != null)
-                    {
-                        sm.Dispose();
-                        sm.Close();
-                    }
-                }
-            }
+            GlowingEarth.getInstance().getMaster().getResources().Add(res);
         }
 
         private bool chckRes()
         {
-            foreach (Model.Resource r in reslist)
+            foreach (Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
             {
                 if (res.getMark().Equals(r.getMark()))
                 {

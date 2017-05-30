@@ -12,126 +12,89 @@ namespace WorldResources.Controler
     class DeleteControler
     {
         private bool success;
-        public DeleteControler(Model.Resource r, GlowingEarth ge)
+        public DeleteControler(Model.Resource r)
         {
-            foreach(Model.Resource d in ge.resources)
+            foreach(Model.Resource d in GlowingEarth.getInstance().getMaster().getResources())
             {
                 if (d.getMark().Equals(r.getMark()))
                 {
-                    ge.resources.Remove(d);
-                    success = saveList(ge.resources);
+                    GlowingEarth.getInstance().getMaster().getResources().Remove(d);
                     break;
                 }
             }
+            ObservableCollection<Model.MapItem> mati = new ObservableCollection<Model.MapItem>();
+
+            foreach(Model.MapItem mi in GlowingEarth.getInstance().getMaster().getMapItems())
+            {
+                if (!mi.getID().Equals(r.getMark()))
+                {
+                    mati.Add(mi);
+                }
+            }
+            GlowingEarth.getInstance().getMaster().setMapItems(mati);
+            success = true;
         }
 
-        public DeleteControler(Model.Etiquette e, GlowingEarth ge)
+        public DeleteControler(Model.Etiquette e)
         {
-            foreach (Model.Etiquette d in ge.tags)
+            foreach (Model.Etiquette d in GlowingEarth.getInstance().getMaster().getTags())
             {
                 if (d.getID().Equals(e.getID()))
                 {
-                    ge.tags.Remove(d);
-                    success = saveList(ge.tags);
+                    GlowingEarth.getInstance().getMaster().getTags().Remove(d);
                     break;
                 }
             }
-            foreach(Model.Resource r in ge.resources)
+            foreach(Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
             {
-                List<Model.Etiquette> temp = r.getTags();       //Lista etiketa
-                foreach(Model.Etiquette et in temp)             //Ako se etiketa slaze sa prosledjenom
+                foreach(Model.Etiquette et in r.getTags())
                 {
                     if (et.getID().Equals(e.getID()))
                     {
-                        temp.Remove(et);                        //Obrisi je iz temp liste
+                        r.getTags().Remove(et);
+                        break;
                     }
                 }
-                r.setTags(temp);                                //Nova lista etiketa
+                r.setTags(r.getTags());                                //Cudna greska bez ovoga -.-
             }
-
+            
+            success = true;
         }
-        public DeleteControler(Model.Type e, GlowingEarth ge)
+        public DeleteControler(Model.Type e)
         {
-            foreach (Model.Type d in ge.types)
+            foreach (Model.Type d in GlowingEarth.getInstance().getMaster().getTypes())
             {
                 if (d.getMark().Equals(e.getMark()))
                 {
-                    ge.types.Remove(d);
-                    success = saveList(ge.types);
+                    GlowingEarth.getInstance().getMaster().getTypes().Remove(d);
                     break;
                 }
             }
-            ObservableCollection<Model.Resource> novi = new ObservableCollection<Model.Resource>();
-            for(int i=0; i<ge.resources.Count; i++)
+            ObservableCollection<Model.Resource> temp = new ObservableCollection<Model.Resource>();
+            foreach(Model.Resource r in GlowingEarth.getInstance().getMaster().resources)
             {
-                novi.Add(ge.resources[i]);
+                temp.Add(r);
             }
-            foreach(Model.Resource r in ge.resources)
+            for(int i=0; i<temp.Count; i++)
             {
-                Model.Type temp = r.getType();
-                if (temp.getMark().Equals(e.getMark()))
+                if (e.getMark().Equals(temp[i].getType().getMark()))
                 {
-                    novi.Remove(r);        //Obrisi taj resurs ako obrises tip
+                    Model.Resource rz = temp[i];
+                    ObservableCollection<Model.MapItem> mati = new ObservableCollection<Model.MapItem>();
+
+                    foreach (Model.MapItem mi in GlowingEarth.getInstance().getMaster().getMapItems())
+                    {
+                        if (!mi.getID().Equals(rz.getMark()))
+                        {
+                            mati.Add(mi);
+                        }
+                    }
+                    GlowingEarth.getInstance().getMaster().setMapItems(mati);
+                    GlowingEarth.getInstance().getMaster().getResources().Remove(temp[i]);
                 }
             }
-            ge.resources = novi;
-            saveList(ge.resources);
-        }
-        public bool saveList(ObservableCollection<Model.Resource> c)
-        {
-            BinaryFormatter fm = new BinaryFormatter();
-            FileStream sm = null;
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "reslist");
-
-            if (File.Exists(path))
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, c);
-                sm.Dispose();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool saveList(ObservableCollection<Model.Etiquette> c)
-        {
-            BinaryFormatter fm = new BinaryFormatter();
-            FileStream sm = null;
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tagList");
-
-            if (File.Exists(path))
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, c);
-                sm.Dispose();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool saveList(ObservableCollection<Model.Type> c)
-        {
-            BinaryFormatter fm = new BinaryFormatter();
-            FileStream sm = null;
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "typeList");
-
-            if (File.Exists(path))
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, c);
-                sm.Dispose();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
+            
+            success = true;
         }
 
         public bool getSucc()

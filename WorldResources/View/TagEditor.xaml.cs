@@ -44,9 +44,9 @@ namespace WorldResources.View
         {
             refer = ge;
             InitializeComponent();
-            tags = ge.tags;
+            tags = ge.getMaster().tags;
             copy = new ObservableCollection<Model.Etiquette>();
-            foreach(Model.Etiquette e in refer.tags)
+            foreach(Model.Etiquette e in refer.getMaster().tags)
             {
                 copy.Add(e);
             }
@@ -73,7 +73,8 @@ namespace WorldResources.View
             MessageBoxResult mbr = System.Windows.MessageBox.Show("Are you sure?", "Confirm Deletion", MessageBoxButton.YesNo);
             if (mbr == MessageBoxResult.Yes)
             {
-                Controler.DeleteControler dc = new Controler.DeleteControler(_selectedTag, refer);
+                Controler.DeleteControler dc = new Controler.DeleteControler(_selectedTag);
+                GlowingEarth.getInstance().getMaster().notifyChange();
             }
         }
 
@@ -84,10 +85,11 @@ namespace WorldResources.View
 
         private void modify_Click(object sender, RoutedEventArgs e)
         {
-            Controler.ModifyControler mc = new Controler.ModifyControler(this, refer);
+            Controler.ModifyControler mc = new Controler.ModifyControler(this);
             if (mc.getSucc())
             {
                 System.Windows.MessageBox.Show("Resource modified successfully!", "Success!", MessageBoxButton.OK);
+                GlowingEarth.getInstance().getMaster().notifyChange();
             }
             else
             {
@@ -110,7 +112,7 @@ namespace WorldResources.View
             if (tags != null)
             {
                 ObservableCollection<Model.Etiquette> tagz = new ObservableCollection<Model.Etiquette>();
-                foreach (Model.Etiquette et in refer.tags)
+                foreach (Model.Etiquette et in refer.getMaster().tags)
                 {
                     if (et.getID().Contains(searchBox.Text))
                     {
@@ -127,7 +129,7 @@ namespace WorldResources.View
 
         private void searchBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (searchBox.Text.Equals("Search for types..."))
+            if (searchBox.Text.Equals("Search for tags..."))
             {
                 searchBox.Text = "";
             }
@@ -139,7 +141,7 @@ namespace WorldResources.View
             searchBox.Foreground = Brushes.Gray;
             if (searchBox.Text.Equals(""))
             {
-                searchBox.Text = "Search for resources...";
+                searchBox.Text = "Search for tags...";
                 restartTagz();
             }
         }

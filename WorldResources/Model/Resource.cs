@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace WorldResources.Model
 {
@@ -29,8 +30,8 @@ namespace WorldResources.Model
         public List<Etiquette> taglist { get; set; }
 
         private bool hasTypeImg;
-
-public Resource(string m, string n, string d, Type t, FreqType f, double p, Units u, bool o, bool s, bool e, DateTime dt, string pic)
+      
+        public Resource(string m, string n, string d, Type t, FreqType f, double p, Units u, bool o, bool s, bool e, DateTime dt, string pic)
         {
             ID = m;
             name = n;

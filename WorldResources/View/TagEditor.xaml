@@ -30,7 +30,7 @@
                 <DataGridTemplateColumn Header="Color" Width="70" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Background="{Binding colCod}" BorderThickness="2" BorderBrush="Gray" Width="20"/>
+                            <Label Background="{Binding colCod}" BorderThickness="2" BorderBrush="Gray" Width="20"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -40,6 +40,7 @@ namespace WorldResources.View
                     IDbox.Text = "";
                     descBox.Text = "";
                     Errl.Content = "";
+                    GlowingEarth.getInstance().getMaster().notifyChange();
                 }
             }
         }
@@ -79,7 +80,7 @@ namespace WorldResources.View
             String curText = IDbox.Text;
             bool found = false;
 
-            foreach (Model.Etiquette r in ge.tags)
+            foreach (Model.Etiquette r in GlowingEarth.getInstance().getMaster().tags)
             {
                 if (r.getID().Equals(curText))
                 {

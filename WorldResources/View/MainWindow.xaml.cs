@@ -56,7 +56,7 @@ namespace WorldResources
             {
                 if (existance(u))
                 {
-                    GlowingEarth ge = new GlowingEarth();
+                    GlowingEarth ge = GlowingEarth.getInstance();
                     ge.Show();
                     this.Close();
                 }
@@ -133,7 +133,7 @@ namespace WorldResources
         //SKLONI OVO PRED PREDAJU PROJEKTA!!!
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GlowingEarth ge = new GlowingEarth();
+            GlowingEarth ge = GlowingEarth.getInstance();
             ge.Show();
             this.Close();
         }
