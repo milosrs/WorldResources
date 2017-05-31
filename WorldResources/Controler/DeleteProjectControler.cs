@@ -14,7 +14,7 @@ namespace WorldResources.Controler
             GlowingEarth.getInstance().getMaster().getTypes().Clear();
             GlowingEarth.getInstance().getMaster().getTags().Clear();
             GlowingEarth.getInstance().getMaster().getMapItems().Clear();
-            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
+            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle().Replace("*",string.Empty));
         }
     }
 }

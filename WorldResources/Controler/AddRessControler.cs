@@ -33,7 +33,7 @@ namespace WorldResources.Controler
                         res.taglist.Add(b);
                     }
                 }
-                res.setName(wind.nameBox.Text);
+                res.setName(wind.nameBox.Text.Trim(' '));
                 res.setMark(wind.IDBox.Text);
                 res.setDesc(wind.descBox.Text);
                 if (wind.radioFreq.IsChecked == true)
@@ -91,8 +91,8 @@ namespace WorldResources.Controler
             if (chckRes())
             {
                 addRes();
+                GlowingEarth.getInstance().getMaster().notifyChange();
                 success = true;
-                GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
             }
             else
             {

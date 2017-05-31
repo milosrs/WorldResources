@@ -17,9 +17,10 @@
             <RowDefinition Height="145*"/>
         </Grid.RowDefinitions>
         <Label x:Name="label" Content="Map name :" Foreground="Aqua" FontSize="15" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Height="36" Width="101"/>
-        <TextBox x:Name="nameBox" FontSize="15" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="23" Margin="116,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="286"/>
+        <TextBox x:Name="nameBox" FontSize="15" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="23" Margin="116,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="286" PreviewKeyDown="nameBox_PreviewKeyDown"/>
         <Button x:Name="createBtn" FontSize="15" Content="Create" Grid.Column="1" HorizontalAlignment="Left" Margin="9,94,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="createBtn_Click"/>
         <Button x:Name="cancelBtn" FontSize="15" Content="Cancel" Grid.Column="2" HorizontalAlignment="Left" Margin="10,94,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="cancelBtn_Click"/>
+        <Label x:Name="error" Content="" Foreground="Red" Grid.Column="1" HorizontalAlignment="Left" Margin="10,32,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="169"/>
 
     </Grid>
 </Window>

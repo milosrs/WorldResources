@@ -52,7 +52,7 @@ namespace WorldResources.Controler
                 }
             }
             success = true;
-            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
+            GlowingEarth.getInstance().getMaster().notifyChange();
         }
         public ModifyControler(View.TypeEditor resed)
         {
@@ -100,7 +100,7 @@ namespace WorldResources.Controler
             GlowingEarth.getInstance().getMaster().setResources(temp);
             success = true;
             GlowingEarth.getInstance().map.Items.Refresh();
-            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
+            GlowingEarth.getInstance().getMaster().notifyChange();
         }
         public ModifyControler(View.TagEditor resed)
         {
@@ -136,76 +136,7 @@ namespace WorldResources.Controler
                 r.setTags(temp);
             }
             success = true;
-            GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
-        }
-
-        public bool saveList(ObservableCollection<Model.Resource> c)
-        {
-            if (c == null)
-            {
-                return false;
-            }
-            BinaryFormatter fm = new BinaryFormatter();
-            FileStream sm = null;
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "reslist");
-
-            if (File.Exists(path))
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, c);
-                sm.Dispose();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool saveList(ObservableCollection<Model.Etiquette> c)
-        {
-            if (c == null)
-            {
-                return false;
-            }
-            BinaryFormatter fm = new BinaryFormatter();
-            FileStream sm = null;
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tagList");
-
-            if (File.Exists(path))
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, c);
-                sm.Dispose();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public bool saveList(ObservableCollection<Model.Type> c)
-        {
-            if (c == null)
-            {
-                return false;
-            }
-            BinaryFormatter fm = new BinaryFormatter();
-            FileStream sm = null;
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "typeList");
-
-            if (File.Exists(path))
-            {
-                sm = File.OpenWrite(path);
-                fm.Serialize(sm, c);
-                sm.Dispose();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
+            GlowingEarth.getInstance().getMaster().notifyChange();
         }
 
         public bool getSucc()
@@ -218,7 +149,7 @@ namespace WorldResources.Controler
             res = new Model.Resource();
             if (contAddRes())
             {
-                res.setName(re.nameBox.Text);
+                res.setName(re.nameBox.Text.Trim(' '));
                 res.setMark(re.IDBox.Text);
                 res.setDesc(re.descBox.Text);
                 if (re.radioFreq.IsChecked == true)
@@ -294,11 +225,10 @@ namespace WorldResources.Controler
                     res.setHasTypeImg(false);
                 }
 
-                res.getTags().Clear();
-
+                
                 bool dontModify=true;
                 List<Model.Etiquette> et = new List<Model.Etiquette>();
-                foreach (Model.Etiquette e in re.selectedResource.getTags())
+                foreach (Model.Etiquette e in re.tags)
                 {
                     if (e.isPartOfRes)
                     {
@@ -306,15 +236,27 @@ namespace WorldResources.Controler
                         et.Add(e);
                     }
                 }
-                res.setTags(et);
+
+                bool dontAdd = false;
                 if (!dontModify)
                 {
                     foreach (Model.Etiquette e in GlowingEarth.getInstance().getMaster().getTags())
                     {
                         if (e.isPartOfRes)
                         {
-                            dontModify = false;
-                            et.Add(e);
+                            List<Model.Etiquette> etz = re.selectedResource.getTags();
+                            foreach(Model.Etiquette z in etz)
+                            {
+                                if (z.getID().Equals(e.getID()))
+                                {
+                                    dontAdd = true;
+                                    break;
+                                }
+                            }
+                            if (!dontAdd)
+                            {
+                                et.Add(e);
+                            }
                         }
                     }
                     res.setTags(et);
@@ -377,7 +319,7 @@ namespace WorldResources.Controler
         {
             if (contAddType())
             {
-                Model.Type t = new Model.Type(te.IDbox.Text, te.nameBox.Text, te.descBox.Text, te.icoPath.Text);
+                Model.Type t = new Model.Type(te.IDbox.Text, te.nameBox.Text.Trim(' '), te.descBox.Text, te.icoPath.Text);
                 return t;
             }
             success = false;

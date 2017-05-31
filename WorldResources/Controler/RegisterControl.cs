@@ -26,7 +26,7 @@ namespace WorldResources
         public void openData()
         {
 
-            user = new User(rw.getUser(), rw.getPass());
+            user = new User(rw.getUser().Trim(), rw.getPass());
 
             if (File.Exists(path))
             {

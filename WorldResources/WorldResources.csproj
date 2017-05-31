@@ -112,6 +112,7 @@
     <Compile Include="Controler\PicChanger.cs" />
     <Compile Include="Controler\SaveProjectAsControler.cs" />
     <Compile Include="Controler\SaveProjectControler.cs" />
+    <Compile Include="Controler\ThisWasLastController.cs" />
     <Compile Include="Model\Etiquette.cs" />
     <Compile Include="Model\MapItem.cs" />
     <Compile Include="Model\MasterClass.cs" />

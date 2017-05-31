@@ -92,7 +92,7 @@
                         <DataTemplate DataType="{x:Type data:MapItem}" >
                             <StackPanel HorizontalAlignment="Center" Opacity="0.9" Height="170" Width="100">
                                 <Image Width="100" Height="90" Stretch="Fill" Source="{Binding path}" Margin="5" />
-                                <TextBlock TextAlignment="Center" FontSize="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding name}" FontStyle="Oblique" Foreground="Wheat" FontWeight="Bold" Margin="2"  />
+                                <TextBlock TextAlignment="Center" FontSize="17.5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Text="{Binding name}" FontStyle="Oblique" Foreground="Wheat" FontWeight="Bold" Margin="2"  />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

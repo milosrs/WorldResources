@@ -180,8 +180,8 @@ namespace WorldResources.View
             if (mbr == MessageBoxResult.Yes)
             {
                 copy.Remove(selectedResource);
-                res.Remove(selectedResource);
                 Controler.DeleteControler dc = new Controler.DeleteControler(_selectedResource);
+                res.Remove(selectedResource);
                 GlowingEarth.getInstance().getMaster().notifyChange();
             }
         }

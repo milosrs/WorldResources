@@ -8,7 +8,7 @@
         Title="Login" Height="424" Width="525"
         WindowStartupLocation="CenterScreen"
         Background="#1a1a1a"
-        ResizeMode="NoResize" Loaded="Window_Loaded">
+        ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>

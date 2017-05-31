@@ -48,6 +48,7 @@ namespace WorldResources.Controler
                 {
                     GlowingEarth.getInstance().getMaster().setSerPath(fd.FileName);
                     saveProject(fd.FileName);
+                    ThisWasLastController tc = new ThisWasLastController("save");
                 }
             }
         }

@@ -123,34 +123,36 @@ namespace WorldResources
         }
         public void refresh()
         {
-            path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "typeList");
-            if (File.Exists(path))
+            ThisWasLastController twl = new ThisWasLastController("load");
+            path = twl.GetFromHere();
+
+            BinaryFormatter fm = new BinaryFormatter();
+            FileStream sm = null;
+            try
             {
-                fm = new BinaryFormatter();
                 sm = File.OpenRead(path);
-                mc.types = (ObservableCollection<Model.Type>)fm.Deserialize(sm);
-                sm.Dispose();
-                sm.Close();
+                Model.MasterClass x = (Model.MasterClass)fm.Deserialize(sm);
+                GlowingEarth.getInstance().getMaster().setTags(x.getTags());
+                GlowingEarth.getInstance().getMaster().setTypes(x.getTypes());
+                GlowingEarth.getInstance().getMaster().setResources(x.getResources());
+                GlowingEarth.getInstance().getMaster().setTitle(x.getTitle());
+                GlowingEarth.getInstance().getMaster().setSerPath(x.getSerPath());
+                GlowingEarth.getInstance().getMaster().setMapItems(x.getMapItems());
             }
-            path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tagList");
-            if (File.Exists(path))
+            catch (Exception e)
             {
-                fm = new BinaryFormatter();
-                sm = File.OpenRead(path);
-                mc.tags = (ObservableCollection<Model.Etiquette>)fm.Deserialize(sm);
-                sm.Dispose();
-                sm.Close();
+                NewProjectDialog npd = new NewProjectDialog();
+                npd.ShowDialog();
+                twl.save();
             }
-            path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "reslist");
-            if (File.Exists(path))
+            finally
             {
-                fm = new BinaryFormatter();
-                sm = File.OpenRead(path);
-                mc.resources = (ObservableCollection<Model.Resource>)fm.Deserialize(sm);
-                sm.Dispose();
-                sm.Close();
+                if (sm != null)
+                {
+                    sm.Dispose();
+                    sm.Close();
+                }
             }
-            InitializeComponent();
             this.DataContext = this;
         }
 
@@ -172,7 +174,6 @@ namespace WorldResources
             {
                 et.isPartOfRes = false;
             }
-            //resetCanvas();
         }
 
         private void TypEditor_Click(object sender, RoutedEventArgs e)
@@ -333,7 +334,7 @@ namespace WorldResources
                 }
                 else
                 {
-                    if (Math.Abs(point.X - m.position.X) <= 65 && Math.Abs(point.Y - m.position.Y) <= 60)
+                    if (Math.Abs(point.X - m.position.X) <= 100 && Math.Abs(point.Y - m.position.Y) <= 100)
                     {
                         ret = m;
                     }
@@ -393,7 +394,10 @@ namespace WorldResources
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteProjectControler dpc = new DeleteProjectControler();
+            if(MessageBox.Show("This will discard everything in your project. Are you sure you want to continue?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                DeleteProjectControler dpc = new DeleteProjectControler();
+            }
         }
         private void Exit_Executed(object sender, RoutedEventArgs e)
         {

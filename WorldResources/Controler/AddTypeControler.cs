@@ -26,7 +26,7 @@ namespace WorldResources.Controler
             if (contAdd())
             {
                 string img = wind.icoPath.Text;
-                e = new Model.Type(wind.IDbox.Text, wind.nameBox.Text, wind.descBox.Text, img);
+                e = new Model.Type(wind.IDbox.Text, wind.nameBox.Text.Trim(' '), wind.descBox.Text, img);
             }
             else
             {
@@ -38,7 +38,7 @@ namespace WorldResources.Controler
             {
                 addTag();
                 success = true;
-                GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
+                GlowingEarth.getInstance().getMaster().notifyChange();
                 return;
             }
             else

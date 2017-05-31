@@ -37,7 +37,7 @@ namespace WorldResources.Controler
             {
                 addTag();
                 success = true;
-                GlowingEarth.getInstance().getMaster().setTitle(GlowingEarth.getInstance().getMaster().getTitle() + "*");
+                GlowingEarth.getInstance().getMaster().notifyChange();
                 return;
             }
             else

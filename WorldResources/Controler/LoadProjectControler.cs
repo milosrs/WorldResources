@@ -50,10 +50,11 @@ namespace WorldResources.Controler
                     GlowingEarth.getInstance().getMaster().setTitle(x.getTitle());
                     GlowingEarth.getInstance().getMaster().setSerPath(x.getSerPath());
                     GlowingEarth.getInstance().getMaster().setMapItems(x.getMapItems());
+                    ThisWasLastController tc = new ThisWasLastController("save");
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show("Saving went wrong. Please, try again. If the problem persists, contact your administrator.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Loading went wrong. Please, try again. If the problem persists, contact your administrator.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {

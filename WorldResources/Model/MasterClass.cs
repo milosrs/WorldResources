@@ -175,7 +175,8 @@ namespace WorldResources.Model
         public void notifyChange()
         {
             if(!_title.Contains("*"))
-                _title = title + "*";
+                _title = _title + "*";
+            title = _title;
         }
 
         public string getLastOpened()
