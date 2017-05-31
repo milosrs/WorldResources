@@ -101,8 +101,16 @@ namespace WorldResources
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            View.NewRes nr = new View.NewRes(this);
-            nr.ShowDialog();
+            if (mc.getTypes().Count > 0)
+            {
+                View.NewRes nr = new View.NewRes(this);
+                nr.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You have no types. Add a type, and try again.", "Pointless operation", MessageBoxButton.OK);
+            }
+            
         }
 
         private void Type_Click(object sender, RoutedEventArgs e)
