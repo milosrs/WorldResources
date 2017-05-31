@@ -104,33 +104,34 @@
                     <RowDefinition Height="110"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="127"/>
+                    <ColumnDefinition Width="75.5"/>
+                    <ColumnDefinition Width="51.5"/>
                     <ColumnDefinition Width="Auto" MinWidth="424"/>
                     <ColumnDefinition Width="Auto" MinWidth="371"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="ID" Foreground="Aqua" Margin="4,2,2,0"></TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" Foreground="Aqua" Margin="4,2,2,0"></TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Date" Foreground="Aqua" Margin="4,2,2,0"></TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Frequency" Foreground="Aqua" Margin="4,2,2,0"></TextBlock>
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Unit" Foreground="Aqua" Margin="4,2,2,0"></TextBlock>
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="Importances" Foreground="Aqua" Margin="4,0,2,2"></TextBlock>
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="Description" Foreground="Aqua" Margin="4,8,2,15" Grid.RowSpan="2"></TextBlock>
-                <TextBlock Grid.Row="9" Grid.Column="0" Text="Type" Foreground="Aqua" Margin="0,31,6,14"></TextBlock>
-                <TextBlock Grid.Row="10" Grid.Column="0" Text="Image" Foreground="Aqua" Margin="0,4,6,3"/>
-                <TextBlock Grid.Row="11" Grid.Column="0" Text="Price" Foreground="Aqua" Margin="2,10,4,10"/>
-                <TextBlock Grid.Row="12" Grid.Column="0" Text="Tags" Foreground="Aqua" Margin="0,15,6,72"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="ID" Foreground="Aqua" Margin="4,2,9.5,0"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" Foreground="Aqua" Margin="4,2,9.5,0"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Date" Foreground="Aqua" Margin="4,2,9.5,0"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Frequency" Foreground="Aqua" Margin="4,2,9.5,0"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Unit" Foreground="Aqua" Margin="4,2,9.5,0" Height="31" VerticalAlignment="Top"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Importances" Foreground="Aqua" Margin="4,0,2,2" Grid.ColumnSpan="2"></TextBlock>
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="Description" Foreground="Aqua" Margin="4,8,2,15" Grid.RowSpan="2" Grid.ColumnSpan="2"></TextBlock>
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="Type" Foreground="Aqua" Margin="0,31,9.5,14"/>
+                <TextBlock Grid.Row="10" Grid.Column="0" Text="Image" Foreground="Aqua" Margin="0,4,6,3" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="11" Grid.Column="0" Text="Price" Foreground="Aqua" Margin="2,10,9.5,10"/>
+                <TextBlock Grid.Row="12" Grid.Column="0" Text="Tags" Foreground="Aqua" Margin="0,15,6,72" Grid.ColumnSpan="2"/>
 
-                <TextBox Name="IDBox" Grid.Row="1" Grid.Column="1" Text="{Binding Path=selectedResource.ID, Mode=OneWay}" Margin="5,5,274,5" Grid.ColumnSpan="2" IsEnabled="False"></TextBox>
-                <TextBox Name="nameBox" Grid.Row="2" Grid.Column="1" Text="{Binding Path=selectedResource.name, Mode=OneWay}" Margin="5,5,274,5" Grid.ColumnSpan="2" PreviewKeyDown="nameBox_PreviewKeyDown"></TextBox>
-                <DatePicker Name="Date" Grid.Row="3" Grid.Column="1" Margin="5,5,274,5" SelectedDate="{Binding Path=selectedResource.datum, Mode=OneWay}" Grid.ColumnSpan="2" CalendarClosed="Date_CalendarClosed"></DatePicker>
-                <GroupBox Name="freq" BorderThickness="0" Width="Auto" Height="Auto" Grid.Row="4" Grid.Column="1" Margin="5,5,274,5" Grid.ColumnSpan="2">
+                <TextBox Name="IDBox" Grid.Row="1" Grid.Column="2" Text="{Binding Path=selectedResource.ID, Mode=OneWay}" Margin="5,5,274,5" Grid.ColumnSpan="2" IsEnabled="False"></TextBox>
+                <TextBox Name="nameBox" Grid.Row="2" Grid.Column="2" Text="{Binding Path=selectedResource.name, Mode=OneWay}" Margin="5,5,274,5" Grid.ColumnSpan="2" PreviewKeyDown="nameBox_PreviewKeyDown"></TextBox>
+                <DatePicker Name="Date" Grid.Row="3" Grid.Column="2" Margin="5,5,274,5" SelectedDate="{Binding Path=selectedResource.datum, Mode=OneWay}" Grid.ColumnSpan="2" CalendarClosed="Date_CalendarClosed"></DatePicker>
+                <GroupBox Name="freq" BorderThickness="0" Width="Auto" Height="Auto" Grid.Row="4" Grid.Column="2" Margin="5,5,274,5" Grid.ColumnSpan="2">
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="radioRare" Content="Rare" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Grid.Column="1" Foreground="#FF79A7AC" Height="15"/>
                         <RadioButton x:Name="radioFreq" Content="Frequent" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Grid.Column="1" Foreground="#FF79A7AC" Height="15" />
                         <RadioButton x:Name="radioUniv" Content="Universal" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Foreground="#FF79A7AC" Height="15"/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Name="unit" BorderThickness="0" Width="Auto" Height="Auto" Grid.Row="5" Grid.Column="1" Margin="5,5,274,5" Grid.ColumnSpan="2">
+                <GroupBox Name="unit" BorderThickness="0" Width="Auto" Height="Auto" Grid.Row="5" Grid.Column="2" Margin="5,5,274,5" Grid.ColumnSpan="2">
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="radioScoop" Content="Scoop" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF79A7AC" Width="70"/>
                         <RadioButton x:Name="radioBarrel" Content="Barrel" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF79A7AC" Width="70"/>
@@ -138,11 +139,11 @@
                         <RadioButton x:Name="radioKG" Content="kg" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF79A7AC" Width="70"/>
                     </StackPanel>
                 </GroupBox>
-                <CheckBox Name="Strt" Content="Strategic importance" Foreground="#FF79A7AC" IsChecked="{Binding Path=selectedResource.str, Mode=OneWay}" Grid.Row="6" Grid.Column="1" Margin="10,0,42,0"></CheckBox>
-                <CheckBox Name="ren" Content="Description" Foreground="#FF79A7AC" IsChecked="{Binding Path=selectedResource.ob, Mode=OneWay}" Grid.Row="6" Grid.Column="1" Margin="149,0,274,0" Grid.ColumnSpan="2"></CheckBox>
-                <CheckBox Name="exp" Content="Type" Foreground="#FF79A7AC" IsChecked="{Binding Path=selectedResource.eksp, Mode=OneWay}" Grid.Row="6" Grid.Column="1" Margin="247,0,175,0" Grid.ColumnSpan="2"/>
-                <TextBox Name="descBox" TextWrapping="Wrap" Grid.Row="7" Grid.Column="1" Text="{Binding Path=selectedResource.desc, Mode=OneWay}" Height="Auto" Margin="10,4,269,50" Grid.ColumnSpan="2" Grid.RowSpan="3"></TextBox>
-                <ComboBox Name="typeBox" ItemsSource="{Binding Path=refer.types, Mode=OneWay}" Grid.Row="9" Grid.Column="1" Width="Auto" Margin="9,31,270,14" Grid.ColumnSpan="2">
+                <CheckBox Name="Strt" Content="Strategic importance" Foreground="#FF79A7AC" IsChecked="{Binding Path=selectedResource.str, Mode=OneWay}" Grid.Row="6" Grid.Column="2" Margin="10,0,42,0"></CheckBox>
+                <CheckBox Name="ren" Content="Description" Foreground="#FF79A7AC" IsChecked="{Binding Path=selectedResource.ob, Mode=OneWay}" Grid.Row="6" Grid.Column="2" Margin="149,0,274,0" Grid.ColumnSpan="2"></CheckBox>
+                <CheckBox Name="exp" Content="Type" Foreground="#FF79A7AC" IsChecked="{Binding Path=selectedResource.eksp, Mode=OneWay}" Grid.Row="6" Grid.Column="2" Margin="247,0,175,0" Grid.ColumnSpan="2"/>
+                <TextBox Name="descBox" TextWrapping="Wrap" Grid.Row="7" Grid.Column="2" Text="{Binding Path=selectedResource.desc, Mode=OneWay}" Height="Auto" Margin="10,4,269,50" Grid.ColumnSpan="2" Grid.RowSpan="3"></TextBox>
+                <ComboBox Name="typeBox" ItemsSource="{Binding Path=refer.types, Mode=OneWay}" Grid.Row="9" Grid.Column="2" Width="Auto" Margin="9,31,270,14" Grid.ColumnSpan="2">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -160,10 +161,10 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button Grid.Row="10" Grid.Column="1" Content="Browse" Margin="268,0,76,0" Click="Button_Click"/>
-                <TextBox Name="priceBox" Grid.Row="11" Grid.Column="1" Text="{Binding Path=selectedResource.price, Mode=OneWay}" Height="Auto" Margin="10,7,37,0" RenderTransformOrigin="0.5,0.5" PreviewKeyDown="priceBox_PreviewKeyDown" PreviewTextInput="priceBox_PreviewTextInput"/>
-                <TextBox x:Name="icoPath"  Grid.Column="1" Height="24" Width="250" Margin="10,0,165,0" Grid.Row="10" TextWrapping="NoWrap" Text="{Binding Path=picpath}" VerticalAlignment="Top"/>
-                <ListView x:Name="tagList_Copy" Background="#324251" ItemsSource="{Binding Path=tags, Mode=OneWay}" Foreground="Wheat" Grid.Column="1" HorizontalAlignment="Left" Height="77" Margin="10,10,0,0" Grid.Row="12" VerticalAlignment="Top" Width="201" >
+                <Button Grid.Row="10" Grid.Column="2" Content="Browse" Margin="268,0,76,0" Click="Button_Click"/>
+                <TextBox Name="priceBox" Grid.Row="11" Grid.Column="2" Text="{Binding Path=selectedResource.price, Mode=OneWay}" Height="Auto" Margin="10,7,37,0" RenderTransformOrigin="0.5,0.5" PreviewKeyDown="priceBox_PreviewKeyDown" PreviewTextInput="priceBox_PreviewTextInput"/>
+                <TextBox x:Name="icoPath"  Grid.Column="2" Height="24" Width="250" Margin="10,0,165,0" Grid.Row="10" TextWrapping="NoWrap" Text="{Binding Path=picpath}" VerticalAlignment="Top"/>
+                <ListView x:Name="tagList_Copy" Background="#324251" ItemsSource="{Binding Path=tags, Mode=OneWay}" Foreground="Wheat" Grid.Column="2" HorizontalAlignment="Left" Height="77" Margin="10,10,0,0" Grid.Row="12" VerticalAlignment="Top" Width="201" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -176,8 +177,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock Grid.Row="12" Grid.Column="1" HorizontalAlignment="Center" Text="Avaiable" Foreground="Aqua" Margin="10,98,214,-11" Width="201"/>
-                <ListView x:Name="tagList_Copy1" Background="#324251" ItemsSource="{Binding Path=selectedResource.taglist}" Foreground="Wheat" Grid.Column="1" HorizontalAlignment="Left" Height="77" Margin="219,10,0,0" Grid.Row="12" VerticalAlignment="Top" Width="201" >
+                <TextBlock Grid.Row="12" Grid.Column="2" HorizontalAlignment="Center" Text="Avaiable" Foreground="Aqua" Margin="10,98,214,-11" Width="201"/>
+                <ListView x:Name="tagList_Copy1" Background="#324251" ItemsSource="{Binding Path=selectedResource.taglist}" Foreground="Wheat" Grid.Column="2" HorizontalAlignment="Left" Height="77" Margin="219,10,0,0" Grid.Row="12" VerticalAlignment="Top" Width="201" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -188,7 +189,14 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock Grid.Row="12" Grid.Column="1" HorizontalAlignment="Center" Text="Current" Foreground="Aqua" Margin="219,98,10,-11" Width="196"/>
+                <TextBlock Grid.Row="12" Grid.Column="2" HorizontalAlignment="Center" Text="Current" Foreground="Aqua" Margin="219,98,10,-11" Width="196"/>
+                <Label x:Name="label1" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,4,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+                <Label x:Name="label2" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,4,0,0" VerticalAlignment="Top" Grid.Row="2"/>
+                <Label x:Name="label3" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,4,0,0" VerticalAlignment="Top" Grid.Row="3"/>
+                <Label x:Name="label4" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,4,0,0" VerticalAlignment="Top" Grid.Row="4"/>
+                <Label x:Name="label5" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,4,0,0" VerticalAlignment="Top" Grid.Row="5"/>
+                <Label x:Name="label6" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,23,0,0" VerticalAlignment="Top" Grid.Row="9"/>
+                <Label x:Name="label7" Content="*" Foreground="Red" FontSize="15" Grid.Column="1" HorizontalAlignment="Left" Margin="4.5,4,0,0" VerticalAlignment="Top" Grid.Row="11"/>
             </Grid>
         </ScrollViewer>
         <Button x:Name="modify" Content="Modify" HorizontalAlignment="Left" Margin="10,10,0,6" Grid.Row="2" Grid.Column="1" Width="82" Click="modify_Click"/>
