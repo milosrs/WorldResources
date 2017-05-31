@@ -14,7 +14,7 @@ namespace WorldResources.Controler
     {
         public SaveProjectControler()
         {
-            if (GlowingEarth.getInstance().getMaster().getTitle().Contains("*") && GlowingEarth.getInstance().getMaster().getSerPath().Equals(""))
+            if (GlowingEarth.getInstance().getMaster().getTitle().Contains("*") || GlowingEarth.getInstance().getMaster().getSerPath()==null)
             {
                 SaveFileDialog fd = new SaveFileDialog();
                 fd.DefaultExt = ".gemap";

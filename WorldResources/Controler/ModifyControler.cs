@@ -425,5 +425,20 @@ namespace WorldResources.Controler
             }
             return true;
         }
+
+        public Model.Resource getRes()
+        {
+            return res;
+        }
+
+        public Model.Type getType()
+        {
+            return type;
+        }
+
+        public Model.Etiquette getTag()
+        {
+            return tag;
+        }
     }
 }

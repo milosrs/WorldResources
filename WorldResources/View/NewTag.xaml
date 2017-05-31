@@ -8,7 +8,8 @@
         Title="New Tag" Height="416.4" Width="668.8"
         WindowStartupLocation="CenterScreen"
         Background="#1a1a1a"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        KeyDown="Help">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="13*"/>

@@ -9,7 +9,7 @@
         Title="Edit Tags" Height="480" Width="742"
         WindowStartupLocation="CenterScreen"
         Background="#1a1a1a"
-        ResizeMode="NoResize" Loaded="Window_Loaded">
+        ResizeMode="NoResize" Loaded="Window_Loaded" KeyDown="Help">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="155*"/>
@@ -51,7 +51,7 @@
             <Label Grid.Row="1" Grid.Column="0" Content="Color" Foreground="Aqua" Margin="4,10,1,0"/>
             <Label Grid.Row="2" Grid.Column="0" Content="Description" Foreground="Aqua" Margin="4,2,1,0"/>
             <TextBox Name="IDbox" IsEnabled="False" Text="{Binding selectedTag.mark}" Grid.Row="0" Width="auto" Height="auto" Margin="87,10,23,10" Grid.ColumnSpan="2" />
-            <TextBox Name="descBox" Grid.Row="2" Text="{Binding selectedTag.desc}"  Width="auto" Height="auto" Margin="87,6,23,14" Grid.ColumnSpan="2" />
+            <TextBox Name="descBox" Grid.Row="2" Text="{Binding selectedTag.desc, Mode=OneWay}"  Width="auto" Height="auto" Margin="87,6,23,14" Grid.ColumnSpan="2" />
             <xctk:ColorPicker Name="colorPicker" SelectedColor="{Binding Path=selectedTag.colCod, Mode=OneWay}" HorizontalAlignment="Left" Margin="87,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="37"/>
             <Label x:Name="Error" Content="" Foreground="Red" HorizontalAlignment="Left" Margin="95,8,0,0" VerticalAlignment="Top" Width="106" Grid.Column="2"/>
             <TextBox x:Name="searchBox" Grid.Column="2" Foreground="Gray" HorizontalAlignment="Stretch" Height="23" Margin="10,11,10,0" TextWrapping="Wrap" Text="Search for tags..." VerticalAlignment="Top" TextChanged="searchBox_TextChanged" GotFocus="searchBox_GotFocus" LostFocus="searchBox_LostFocus"/>

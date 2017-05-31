@@ -5,14 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorldResources"
         xmlns:data="clr-namespace:WorldResources.Model"
+        xmlns:cmd="clr-namespace:WorldResources.View"
         mc:Ignorable="d"
         Title="{Binding Path=mc.title}"
         Background="#1a1a1a"
         WindowStartupLocation="CenterScreen"
         Icon="/r/globe.ico" Loaded="Window_Loaded"
         >
-
-
+    <Window.CommandBindings>
+        <CommandBinding Command="cmd:RoutedCommands.NewMap" Executed="NewFile_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.LoadMap" Executed="LoadProject_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.SaveMap" Executed="Save_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.SaveAsMap" Executed="SaveAs_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.ClearMap" Executed="Delete_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.Exit" Executed="Exit_Executed"/>
+        <CommandBinding Command="cmd:RoutedCommands.OpenHelp" Executed="ContextHelp_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.NewRes" Executed="Add_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.NewType" Executed="Type_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.NewTag" Executed="Etiq_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.EditRes" Executed="ResEditor_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.EditType" Executed="TypEditor_Click"/>
+        <CommandBinding Command="cmd:RoutedCommands.EditTag" Executed="TagEditor_Click"/>
+    </Window.CommandBindings>
+    
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <Menu.ItemsPanel>
@@ -21,19 +36,25 @@
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
             <MenuItem Header="File">
-                <MenuItem Header="New map"></MenuItem>
-                <MenuItem Header="Load map"></MenuItem>
-                <MenuItem Header="Save"></MenuItem>
-                <MenuItem Header="Save As"></MenuItem>
-                <MenuItem Header="Exit"></MenuItem>
+                <MenuItem Header="New">
+                    <MenuItem Header="_Map" Command="cmd:RoutedCommands.NewMap" />
+                    <MenuItem Header="_Resource" Command="cmd:RoutedCommands.NewRes"/>
+                    <MenuItem Header="_Type" Command="cmd:RoutedCommands.NewType"/>
+                    <MenuItem Header="_Tag" Command="cmd:RoutedCommands.NewTag"/>
+                </MenuItem>
+                <MenuItem Header="_Load map" Command="cmd:RoutedCommands.LoadMap" ></MenuItem>
+                <MenuItem Header="_Save"  Command="cmd:RoutedCommands.SaveMap"></MenuItem>
+                <MenuItem Header="_Save As"  Command="cmd:RoutedCommands.SaveAsMap"></MenuItem>
+                <MenuItem Header="_Clear map" Command="cmd:RoutedCommands.ClearMap"></MenuItem>
+                <MenuItem Header="_Exit"  Command="cmd:RoutedCommands.Exit"></MenuItem>
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem x:Name="ResEditor" Header="Edit Resources" Click="ResEditor_Click" />
-                <MenuItem x:Name="TypEditor" Header="Edit Types" Click="TypEditor_Click"/>
-                <MenuItem x:Name="TagEditor" Header="Edit Etiquettes" Click="TagEditor_Click"/>
+                <MenuItem x:Name="ResEditor" Header="_Edit Resources" Command="cmd:RoutedCommands.EditRes"/>
+                <MenuItem x:Name="TypEditor" Header="Edit Types" Command="cmd:RoutedCommands.EditType"/>
+                <MenuItem x:Name="TagEditor" Header="Edit Etiquettes" Command="cmd:RoutedCommands.EditTag"/>
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="Documentation"></MenuItem>
+                <MenuItem Header="Help" Command="cmd:RoutedCommands.OpenHelp"></MenuItem>
                 <MenuItem Header="About"></MenuItem>
             </MenuItem>
             <MenuItem IsCheckable="True" IsEnabled="False" ></MenuItem>
@@ -117,7 +138,7 @@
                     <Image Source="/r/about.png" />
                 </Button>
                 <Separator Background="Transparent" Width="5"/>
-                <Button Name="Help" ToolTip="Help">
+                <Button Name="HelpBtn" ToolTip="Help" Click="Help_Click">
                     <Image Source="/r/help.png"  />
                 </Button>
             </ToolBar>

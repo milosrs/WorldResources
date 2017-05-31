@@ -28,7 +28,7 @@ namespace WorldResources
     [Serializable]
     public partial class GlowingEarth : Window, INotifyPropertyChanged
     {
-        
+
         private Model.MapItem _dragItem;                            //Sta se vuce - referenca
         private Model.MapItem mi;                                   //Ono sto se vuce sa mape - zaseban objekat kopija
         private Point startPoint = new Point();                     //Klik tacka
@@ -168,6 +168,10 @@ namespace WorldResources
         private void ResEditor_Click(object sender, RoutedEventArgs e)
         {
             ResEditor re = new ResEditor(this);
+            foreach (Model.Etiquette et in mc.getTags())
+            {
+                et.isPartOfRes = false;
+            }
             //resetCanvas();
         }
 
@@ -234,7 +238,7 @@ namespace WorldResources
 
         private void can_Drop(object sender, DragEventArgs e)
         {
-            Point p = new Point(e.GetPosition(map).X-45, e.GetPosition(map).Y-50);
+            Point p = new Point(e.GetPosition(map).X - 45, e.GetPosition(map).Y - 50);
             if (p.X < 0)
             {
                 p.X = 0;
@@ -244,17 +248,17 @@ namespace WorldResources
                 p.Y = 0;
             }
 
-            if (SearchPosition(e.GetPosition(map))==null && !move)
+            if (SearchPosition(e.GetPosition(map)) == null && !move)
             {
                 dragItem.setPosition(p);
                 mc.resOnCanvas.Add(dragItem);
             }
-            else if(SearchPosition(p) != null && move)
+            else if (SearchPosition(p) != null && move)
             {
                 dragItem.setPosition(mi.getPosition());
                 move = false;
             }
-            else if(SearchPosition(p) == null && move)
+            else if (SearchPosition(p) == null && move)
             {
                 mc.resOnCanvas.Remove(dragItem);
                 dragItem.setPosition(p);
@@ -284,7 +288,7 @@ namespace WorldResources
             {
                 Console.WriteLine("WASAAAP");
                 ItemsControl itemsControl = sender as ItemsControl;
-               
+
                 if (dragItem != null)
                 {
                     DataObject dragData = new DataObject("myFormat", dragItem);
@@ -296,7 +300,7 @@ namespace WorldResources
 
         private Model.MapItem SearchPosition(Point point)
         {
-            Model.MapItem ret=null;
+            Model.MapItem ret = null;
             foreach (Model.MapItem m in mc.resOnCanvas)
             {
                 bool pointIsLefter = false;
@@ -305,11 +309,11 @@ namespace WorldResources
                 {
                     pointIsLefter = true;
                 }
-                if(point.X < m.getPosition().Y)
+                if (point.X < m.getPosition().Y)
                 {
                     pointIsUpper = true;
                 }
-                if(point.X==m.getPosition().X && point.Y==m.getPosition().Y && dragItem.name == m.name)
+                if (point.X == m.getPosition().X && point.Y == m.getPosition().Y && dragItem.name == m.name)
                 {
                     continue;
                 }
@@ -363,7 +367,7 @@ namespace WorldResources
         {
             Console.WriteLine("X:" + e.GetPosition(map).X + " Y:" + e.GetPosition(map).Y);
         }
-        
+
         /*-------------------Akcije-------------------*/
         private void NewFile_Click(object sender, RoutedEventArgs e)
         {
@@ -390,6 +394,24 @@ namespace WorldResources
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             DeleteProjectControler dpc = new DeleteProjectControler();
+        }
+        private void Exit_Executed(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            var outPutDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            var helpPath = System.IO.Path.Combine(outPutDirectory, "r\\Help\\Glowing Earth Help.chm");
+            string path = String.Format(@"..\r\Help\Glowing Earth Help.chm");
+            string help_path = new Uri(helpPath).LocalPath;
+            System.Diagnostics.Process.Start(help_path);
+        }
+
+        private void ContextHelp_Click(object sender, RoutedEventArgs e)
+        {
+            View.HelpViewer hw = new HelpViewer("main");
         }
     }
 }

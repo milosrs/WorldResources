@@ -16,7 +16,8 @@ namespace WorldResources.Model
         private ObservableCollection<Model.Type> _types;            //tipovi
         private ObservableCollection<Model.MapItem> _resOnCanvas;   //Resursi koji su na kanvasu
         private string _title;                                      //Ime projekta
-        private string _serPath;
+        private string _serPath;                                    //Gde je projekat?
+        private string lastOpenedProject;                           //Koji je projekat zadnji put bio otvoren?
 
         [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
@@ -175,6 +176,15 @@ namespace WorldResources.Model
         {
             if(!_title.Contains("*"))
                 _title = title + "*";
+        }
+
+        public string getLastOpened()
+        {
+            return lastOpenedProject;
+        }
+        public void setLastOpened(string lo)
+        {
+            lastOpenedProject = lo;
         }
     }
 }

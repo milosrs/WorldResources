@@ -1,0 +1,23 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Glowing Earth Help.chm
+Contents file=Table of Contents.hhc
+Default topic=introduction.htm
+Display compile progress=No
+Index file=Index.hhk
+Language=0x409 English (United States)
+Title=Glowing Earth Help
+
+
+[FILES]
+Adding a New Resource.htm
+Adding a New Tag.htm
+Adding a New Type.htm
+introduction.htm
+Modifying a Resource.htm
+Modifying a Tag.htm
+Modifying a Type..htm
+Using Main Window.htm
+
+[INFOTYPES]
+

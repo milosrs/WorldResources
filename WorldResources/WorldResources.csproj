@@ -125,6 +125,9 @@
       <DependentUpon>GlowingEarth.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controler\RegisterControl.cs" />
+    <Compile Include="View\HelpViewer.xaml.cs">
+      <DependentUpon>HelpViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NewProjectDialog.xaml.cs">
       <DependentUpon>NewProjectDialog.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,7 @@
     <Compile Include="View\ResEditor.xaml.cs">
       <DependentUpon>ResEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\RoutedCommands.cs" />
     <Compile Include="View\TagEditor.xaml.cs">
       <DependentUpon>TagEditor.xaml</DependentUpon>
     </Compile>
@@ -155,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\GlowingEarth.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\HelpViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -227,6 +235,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="r\Help\Glowing Earth Help.chm" />
+    <None Include="r\Help\Glowing Earth Help.hhp" />
+    <None Include="r\Help\Index.hhk" />
+    <None Include="r\Help\Table of Contents.hhc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -283,6 +295,30 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="r\Help\Adding a New Resource.htm" />
+    <Content Include="r\Help\Adding a New Tag.htm" />
+    <Content Include="r\Help\Adding a New Type.htm" />
+    <Content Include="r\Help\introduction.htm" />
+    <Resource Include="r\Help\MainWindow.jpg" />
+    <Content Include="r\Help\Modifying a Resource.htm" />
+    <Content Include="r\Help\Modifying a Tag.htm" />
+    <Content Include="r\Help\Modifying a Type..htm" />
+    <Resource Include="r\Help\newRes.jpg" />
+    <Resource Include="r\Help\newResWithError.jpg" />
+    <Resource Include="r\Help\newTag.jpg" />
+    <Resource Include="r\Help\newType.jpg" />
+    <Resource Include="r\Help\resEditor.jpg" />
+    <Resource Include="r\Help\resFilters.jpg" />
+    <Resource Include="r\Help\resSuccess.jpg" />
+    <Resource Include="r\Help\tagEdit.jpg" />
+    <Resource Include="r\Help\tagError.jpg" />
+    <Resource Include="r\Help\tagSuccess.jpg" />
+    <Resource Include="r\Help\typeEdit.jpg" />
+    <Resource Include="r\Help\typeError.png" />
+    <Resource Include="r\Help\TypeSuccess.jpg" />
+    <Content Include="r\Help\Using Main Window.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

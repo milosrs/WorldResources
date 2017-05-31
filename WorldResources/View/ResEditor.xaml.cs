@@ -59,7 +59,7 @@ namespace WorldResources.View
         {
             refer = ge;
             InitializeComponent();
-            res = ge.getMaster().resources;
+            res = new ObservableCollection<Model.Resource>();
             types = ge.getMaster().types;
             tags = ge.getMaster().tags;
 
@@ -77,6 +77,7 @@ namespace WorldResources.View
             foreach(Model.Resource r in ge.getMaster().resources)
             {
                 copy.Add(r);
+                res.Add(r);
             }
             ShowDialog();
         }
@@ -178,6 +179,8 @@ namespace WorldResources.View
             MessageBoxResult mbr = System.Windows.MessageBox.Show("Are you sure?", "Confirm Deletion", MessageBoxButton.YesNo);
             if (mbr == MessageBoxResult.Yes)
             {
+                copy.Remove(selectedResource);
+                res.Remove(selectedResource);
                 Controler.DeleteControler dc = new Controler.DeleteControler(_selectedResource);
                 GlowingEarth.getInstance().getMaster().notifyChange();
             }
@@ -193,6 +196,15 @@ namespace WorldResources.View
             Controler.ModifyControler mc = new Controler.ModifyControler(this);
             if (mc.getSucc())
             {
+                for(int i=0; i<copy.Count; i++)
+                {
+                    if (copy[i].getMark().Equals(mc.getRes().getMark()))
+                    {
+                        copy[i] = mc.getRes();
+                        res[i] = mc.getRes();
+                        break;
+                    }
+                }
                 System.Windows.MessageBox.Show("Resource modified successfully!", "Success!", MessageBoxButton.OK);
                 Error.Content ="";
             }
@@ -291,19 +303,31 @@ namespace WorldResources.View
 
         private void typeBox_Copy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ObservableCollection<Model.Resource> resez = new ObservableCollection<Model.Resource>();
             _selectedResource = null;
             picpath = "";
-            if (searchBox.Text.Equals(""))
-            {
-                restartResez();
-            }
             filt = (Model.Type)filter.SelectedItem;
-            if (filt != null)
+            if (filt != null && (searchBox.Text.Equals("") || searchBox.Text.Equals("Search for resources...")))
             {
-                ObservableCollection<Model.Resource> resez = new ObservableCollection<Model.Resource>();
-                foreach (Model.Resource r in refer.getMaster().resources)
+                
+                foreach (Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
                 {
                     if (r.getType().getMark().Equals(filt.getMark()))
+                    {
+                        resez.Add(r);
+                    }
+                }
+                res.Clear();
+                foreach (Model.Resource r in resez)
+                {
+                    res.Add(r);
+                }
+            }
+            else if(filt != null && !(searchBox.Text.Equals("") || searchBox.Text.Equals("Search for resources...")))
+            {
+                foreach (Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
+                {
+                    if (r.getType().getMark().Equals(filt.getMark()) && r.getMark().Equals(searchBox.Text))
                     {
                         resez.Add(r);
                     }
@@ -322,21 +346,36 @@ namespace WorldResources.View
 
         private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            ObservableCollection<Model.Resource> resez = new ObservableCollection<Model.Resource>();
             _selectedResource = null;
             picpath = "";
-            if (searchBox.Text.Equals("") && filt==null)
+            if ((searchBox.Text.Equals("")||searchBox.Text.Equals("Search for resources...")) && filt==null && res!=null && copy!=null)
             {
-                res.Clear();
                 foreach (Model.Resource r in copy)
                 {
                     res.Add(r);
                 }
                 return;
             }
-            if (res != null)
+            else if (filt != null && (searchBox.Text.Equals("") || searchBox.Text.Equals("Search for resources...")))
             {
-                ObservableCollection<Model.Resource> resez = new ObservableCollection<Model.Resource>();
-                foreach (Model.Resource r in refer.getMaster().resources)
+                
+                foreach (Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
+                {
+                    if (r.getMark().Contains(searchBox.Text) && r.getType().getMark().Equals(filt.getMark()))
+                    {
+                        resez.Add(r);
+                    }
+                }
+                res.Clear();
+                foreach (Model.Resource re in resez)
+                {
+                    res.Add(re);
+                }
+            }
+            else if(filt==null && !(searchBox.Text.Equals("") || searchBox.Text.Equals("Search for resources...")))
+            {
+                foreach (Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
                 {
                     if (r.getMark().Contains(searchBox.Text))
                     {
@@ -344,9 +383,28 @@ namespace WorldResources.View
                     }
                 }
                 res.Clear();
-                foreach(Model.Resource r in resez)
+                foreach (Model.Resource re in resez)
                 {
-                    res.Add(r);
+                    res.Add(re);
+                }
+            }
+            else if (filt == null && (searchBox.Text.Equals("") || searchBox.Text.Equals("Search for resources...")))
+            {
+                restartResez();
+            }
+            else
+            {
+                foreach (Model.Resource r in GlowingEarth.getInstance().getMaster().getResources())
+                {
+                    if (r.getMark().Contains(searchBox.Text) && r.getType().getMark().Equals(filt.getMark()))
+                    {
+                        resez.Add(r);
+                    }
+                }
+                res.Clear();
+                foreach (Model.Resource re in resez)
+                {
+                    res.Add(re);
                 }
             }
         }
@@ -363,7 +421,7 @@ namespace WorldResources.View
         private void searchBox_LostFocus(object sender, RoutedEventArgs e)
         {
             searchBox.Foreground = Brushes.Gray;
-            if (searchBox.Text.Equals("") && filter==null)
+            if (searchBox.Text.Equals(""))
             {
                 searchBox.Text = "Search for resources...";
                 restartResez();
@@ -372,10 +430,17 @@ namespace WorldResources.View
 
         public void restartResez()
         {
-            res.Clear();
-            foreach(Model.Resource r in copy)
+            if (res != null)
             {
-                res.Add(r);
+                res.Clear();
+                foreach (Model.Resource r in copy)
+                {
+                    res.Add(r);
+                }
+            }
+            else
+            {
+                res = new ObservableCollection<Model.Resource>();
             }
         }
 
@@ -386,6 +451,14 @@ namespace WorldResources.View
             filt = null;
             searchBox.Text = "Search for resources...";
             filter.SelectedItem = null;
+        }
+
+        private void Help(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+            {
+                HelpViewer hv = new HelpViewer("er");
+            }
         }
     }
 }

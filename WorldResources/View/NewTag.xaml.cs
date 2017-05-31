@@ -100,5 +100,13 @@ namespace WorldResources.View
                 }
             }
         }
+
+        private void Help(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+            {
+                HelpViewer hv = new HelpViewer("ne");
+            }
+        }
     }
 }

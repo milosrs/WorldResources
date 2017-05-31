@@ -14,7 +14,7 @@ namespace WorldResources.Controler
         private string projName;
         public NewProjectControler(string name)
         {
-            if (GlowingEarth.getInstance().getMaster().getTitle().Contains("*") && !GlowingEarth.getInstance().getMaster().getSerPath().Equals(""))
+            if (GlowingEarth.getInstance().getMaster().getTitle().Contains("*"))
             {
                 if (MessageBox.Show("You have some unsaved changes on current map. Do you want to save those changes?", "Save changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
